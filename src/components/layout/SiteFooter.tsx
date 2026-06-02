@@ -1,7 +1,6 @@
 "use client";
 
 import { Globe, Mail, Phone } from "lucide-react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const CONTACT_EMAIL = "l.awambo@yahoo.fr";
@@ -17,11 +16,12 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="flex gap-4">
-            <Image
+            {/* img natif : évite les erreurs sharp/Image sur certains hébergeurs */}
+            <img
               src="/stkm-soft-logo.png"
               alt={t("company")}
-              width={72}
-              height={72}
+              width={64}
+              height={64}
               className="h-16 w-16 shrink-0 rounded-xl object-contain"
             />
             <div>

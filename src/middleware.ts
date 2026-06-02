@@ -1,6 +1,6 @@
 import createIntlMiddleware from "next-intl/middleware";
 import NextAuth from "next-auth";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { NextRequest, NextResponse } from "next/server";
 import { authConfig } from "@/auth.config";
 import { routing } from "@/i18n/routing";
