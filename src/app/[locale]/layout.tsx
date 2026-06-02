@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
 
 type Props = {
   children: React.ReactNode;
@@ -41,7 +35,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
-      <body className={`${geist.variable} antialiased`}>
+      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>{children}</SessionProvider>
         </NextIntlClientProvider>

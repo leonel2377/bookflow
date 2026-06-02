@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 

@@ -1,6 +1,9 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { requireClientLayout } from "@/lib/auth-guard";
 
-export default function CompteLayout({ children }: { children: React.ReactNode }) {
+export default async function CompteLayout({ children }: { children: React.ReactNode }) {
+  await requireClientLayout();
+
   return (
     <>
       <SiteHeader mode="client" />

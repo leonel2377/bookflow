@@ -16,7 +16,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-pro: var(--pro);
   --color-pro-soft: var(--pro-soft);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 body {

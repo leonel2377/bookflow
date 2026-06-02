@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 
 export async function getProviderEstablishment(userId: string) {
   return prisma.establishment.findUnique({
@@ -20,13 +21,15 @@ export async function getProviderEstablishment(userId: string) {
 
 export async function requireProviderEstablishment() {
   const session = await auth();
+  const locale = await getLocale();
+
   if (!session?.user?.id || session.user.role !== UserRole.PROVIDER) {
-    redirect("/pro/connexion");
+    redirect(`/${locale}/pro/connexion`);
   }
 
   const establishment = await getProviderEstablishment(session.user.id);
   if (!establishment) {
-    redirect("/pro/inscription");
+    redirect(`/${locale}/pro/inscription`);
   }
 
   return { session, establishment };

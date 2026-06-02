@@ -1,13 +1,18 @@
-import { UserRole } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
+import { UserRole } from "@/types/roles";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
 export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client" }) {
-  const session = await auth();
+  let session = null;
+  try {
+    session = await auth();
+  } catch {
+    session = null;
+  }
   const user = session?.user;
   const isClient = user?.role === UserRole.CLIENT;
   const isProvider = user?.role === UserRole.PROVIDER;
