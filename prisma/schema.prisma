@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ——— Offre B2B (formules type Planity) ———
+enum SubscriptionPlan {
+  ESSENTIEL // référencement + résa en ligne + planning
+  PREMIUM   // + caisse + fonctionnalités avancées
+}
+
+enum SubscriptionAddon {
+  BOUTIQUE_EN_LIGNE
+  SITE_INTERNET
+  POINTAGE_EQUIPES
+}
+
+// ——— Authentification ———
+enum UserRole {
+  CLIENT
+  PROVIDER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  firstName    String
+  lastName     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  clientProfile Client?
+  establishment Establishment? @relation("EstablishmentOwner")
+  passwordResetTokens PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ——— Côté prestataire ———
+model Establishment {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  address     String?
+  city        String?
+  phone       String?
+  email       String?
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  plan        SubscriptionPlan @default(ESSENTIEL)
+  addons      String           @default("[]") // JSON array of SubscriptionAddon
+
+  ownerId     String?          @unique
+  owner       User?            @relation("EstablishmentOwner", fields: [ownerId], references: [id])
+
+  staff       StaffMember[]
+  services    Service[]
+  photos      EstablishmentPhoto[]
+  openings    OpeningHours[]
+  appointments Appointment[]
+}
+
+model EstablishmentPhoto {
+  id              String        @id @default(cuid())
+  url             String
+  caption         String?
+  sortOrder       Int           @default(0)
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+}
+
+model StaffMember {
+  id              String        @id @default(cuid())
+  firstName       String
+  lastName        String
+  role            String?       // coiffeur, esthéticienne…
+  color           String?       // couleur planning
+  active          Boolean       @default(true)
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  schedules       StaffSchedule[]
+}
+
+model StaffSchedule {
+  id            String      @id @default(cuid())
+  staffId       String
+  staff         StaffMember @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  dayOfWeek     Int         // 0 = dimanche … 6 = samedi
+  startTime     String      // "09:00"
+  endTime       String      // "18:00"
+}
+
+model OpeningHours {
+  id              String        @id @default(cuid())
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  dayOfWeek       Int
+  openTime        String
+  closeTime       String
+  closed          Boolean       @default(false)
+}
+
+model Service {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  durationMinutes Int
+  priceCents      Int
+  category        String?
+  active          Boolean       @default(true)
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+}
+
+// ——— Côté client ———
+model Client {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  phone        String?
+  firstName    String
+  lastName     String
+  smsReminders Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId       String?  @unique
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  appointments Appointment[]
+}
+
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model Appointment {
+  id              String            @id @default(cuid())
+  startAt         DateTime
+  endAt           DateTime
+  status          AppointmentStatus @default(CONFIRMED)
+  notes           String?
+  reminderSentAt  DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  clientId        String
+  client          Client            @relation(fields: [clientId], references: [id])
+  establishmentId String
+  establishment   Establishment     @relation(fields: [establishmentId], references: [id])
+  serviceId       String
+  service         Service           @relation(fields: [serviceId], references: [id])
+  staffId         String?
+  staff           StaffMember?      @relation(fields: [staffId], references: [id])
+}
