@@ -84,7 +84,7 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
    | Version Node | **20.x** |
    | Commande d’installation | `npm install` |
    | Commande de build | `npm run build` |
-   | Commande de démarrage | `npm run start` |
+   | Commande de démarrage | `npm run start -- -p $PORT` (ou `npm run start` si PORT est déjà défini par Hostinger) |
    | Répertoire racine | `/` (racine du repo) |
 
 5. Coller toutes les **variables d’environnement** (étape 2).
@@ -95,6 +95,14 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
 - Si la base est vide : exécuter `db:push` + `db:seed` via **SSH** (si disponible sur votre plan) ou en local en pointant `DATABASE_URL` vers MySQL Hostinger.
 - Tester : `https://votredomaine.com/fr`
 - Connexion démo (si seed) : `client@demo.com` / `demo1234` — **à désactiver ou changer en production**.
+
+### Échec de build (« Failed to build the application »)
+
+1. **Node.js** : version **20.x** (pas 18).
+2. **Variables d’environnement** : `DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NODE_ENV=production` — ajoutées **avant** le deploy.
+3. **Prisma** : le package `prisma` doit être dans `dependencies` (déjà corrigé dans ce repo).
+4. **Start** : `npm run start -- -p $PORT` dans les paramètres Hostinger.
+5. Ouvrir les **Build logs** dans hPanel → Deployments → dernier déploiement → copier les 20 dernières lignes d’erreur.
 
 ### Domaine & HTTPS
 
