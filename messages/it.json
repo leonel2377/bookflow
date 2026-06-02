@@ -49,6 +49,12 @@
       "account": { "title": "Area personale", "text": "Consulta, sposta o annulla gli appuntamenti in autonomia." }
     }
   },
+  "footer": {
+    "company": "STKMSOFT",
+    "title": "Contatti aziendali — promozione",
+    "websiteLabel": "Sito:",
+    "copyright": "© STKMSOFT. Tutti i diritti riservati."
+  },
   "auth": {
     "loginClient": "Accesso cliente",
     "loginClientDesc": "Accedi ai tuoi appuntamenti e gestisci le prenotazioni.",

@@ -49,6 +49,12 @@
       "account": { "title": "Personal area", "text": "View, reschedule or cancel appointments yourself." }
     }
   },
+  "footer": {
+    "company": "STKMSOFT",
+    "title": "Company details — promotion",
+    "websiteLabel": "Website:",
+    "copyright": "© STKMSOFT. All rights reserved."
+  },
   "auth": {
     "loginClient": "Client login",
     "loginClientDesc": "Access your appointments and manage bookings.",

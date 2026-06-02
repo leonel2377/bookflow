@@ -49,6 +49,12 @@
       "account": { "title": "Espace personnel", "text": "Consulter, déplacer ou annuler vos rendez-vous en autonomie." }
     }
   },
+  "footer": {
+    "company": "STKMSOFT",
+    "title": "Coordonnées — publicité",
+    "websiteLabel": "Site :",
+    "copyright": "© STKMSOFT. Tous droits réservés."
+  },
   "auth": {
     "loginClient": "Connexion client",
     "loginClientDesc": "Accédez à vos rendez-vous et gérez vos réservations.",
