@@ -50,10 +50,11 @@
     }
   },
   "footer": {
-    "company": "STKMSOFT",
-    "title": "Contatti aziendali — promozione",
-    "websiteLabel": "Sito:",
-    "copyright": "© STKMSOFT. Tutti i diritti riservati."
+    "company": "STKM SOFT",
+    "tagline": "Sviluppo web & app mobile",
+    "pitch": "Siti moderni, app Android e iOS, soluzioni su misura. Consulenza gratuita.",
+    "contactTitle": "Contattaci",
+    "copyright": "© STKM SOFT — Powered by BOOKFLOW"
   },
   "auth": {
     "loginClient": "Accesso cliente",

@@ -50,10 +50,11 @@
     }
   },
   "footer": {
-    "company": "STKMSOFT",
-    "title": "Coordonnées — publicité",
-    "websiteLabel": "Site :",
-    "copyright": "© STKMSOFT. Tous droits réservés."
+    "company": "STKM SOFT",
+    "tagline": "Développement web & applications mobiles",
+    "pitch": "Sites modernes, applications Android & iOS, solutions sur mesure. Consultation gratuite.",
+    "contactTitle": "Nous contacter",
+    "copyright": "© STKM SOFT — Propulsé par BOOKFLOW"
   },
   "auth": {
     "loginClient": "Connexion client",
