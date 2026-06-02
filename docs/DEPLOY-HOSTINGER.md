@@ -84,7 +84,7 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
    | Version Node | **20.x** |
    | Commande d’installation | `npm install` |
    | Commande de build | `npm run build` |
-   | Commande de démarrage | `npm run start -- -p $PORT` (ou `npm run start` si PORT est déjà défini par Hostinger) |
+   | Commande de démarrage | `npm run start` (le script lit `PORT` automatiquement) |
    | Répertoire racine | `/` (racine du repo) |
 
 5. Coller toutes les **variables d’environnement** (étape 2).
@@ -103,6 +103,18 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
 3. **Prisma** : le package `prisma` doit être dans `dependencies` (déjà corrigé dans ce repo).
 4. **Start** : `npm run start -- -p $PORT` dans les paramètres Hostinger.
 5. Ouvrir les **Build logs** dans hPanel → Deployments → dernier déploiement → copier les 20 dernières lignes d’erreur.
+
+### Erreur 503 « Service Unavailable »
+
+L’app Node **ne tourne pas** ou n’écoute pas sur le bon port.
+
+1. **Start command** dans hPanel : `npm run start` (sans `-- -p $PORT` en double).
+2. **Node 20.x** et dernier commit Git déployé (`fix: remove Prisma from Edge middleware`).
+3. **Variables** : `AUTH_SECRET`, `DATABASE_URL` avec `localhost`, `NODE_ENV=production`.
+4. **Deployments** → ouvrir les **Runtime / Application logs** (pas seulement Build logs).
+5. Test direct : `https://stkmsoft.online/api/health` → doit répondre `{"status":"ok",...}`.
+
+Si `/api/health` fonctionne mais pas `/fr`, le problème est dans l’app (DB, auth). Si rien ne répond → processus arrêté ou mauvais port.
 
 ### Domaine & HTTPS
 
