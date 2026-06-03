@@ -6,21 +6,25 @@ import { formatPrice } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
+async function fetchSalons() {
+  return prisma.establishment.findMany({
+    include: {
+      services: { where: { active: true }, take: 1, orderBy: { priceCents: "asc" } },
+      photos: { orderBy: { sortOrder: "asc" }, take: 1 },
+    },
+    orderBy: { name: "asc" },
+  });
+}
+
+type SalonCard = Awaited<ReturnType<typeof fetchSalons>>[number];
+
 export default async function SalonsPage() {
   const t = await getTranslations("salons");
 
-  let establishments: Awaited<
-    ReturnType<typeof prisma.establishment.findMany>
-  > = [];
+  let establishments: SalonCard[] = [];
 
   try {
-    establishments = await prisma.establishment.findMany({
-      include: {
-        services: { where: { active: true }, take: 1, orderBy: { priceCents: "asc" } },
-        photos: { orderBy: { sortOrder: "asc" }, take: 1 },
-      },
-      orderBy: { name: "asc" },
-    });
+    establishments = await fetchSalons();
   } catch (err) {
     console.error("[salons] DB error:", err);
   }
