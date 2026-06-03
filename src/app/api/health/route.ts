@@ -1,13 +1,19 @@
+import { resolveDatabaseUrl, validateDatabaseUrlFormat } from "@/lib/database-url";
+
 export const dynamic = "force-dynamic";
 
-import { validateDatabaseUrlFormat } from "@/lib/database-url";
-
 export async function GET() {
-  const dbFormat = validateDatabaseUrlFormat(process.env.DATABASE_URL);
+  const { url, source } = resolveDatabaseUrl();
+  if (url) {
+    process.env.DATABASE_URL = url;
+  }
+
+  const dbFormat = url ? validateDatabaseUrlFormat(url) : "DATABASE_URL manquant";
 
   const checks: Record<string, boolean | string> = {
     authSecret: Boolean(process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 16),
-    databaseUrl: Boolean(process.env.DATABASE_URL),
+    databaseUrl: Boolean(url),
+    databaseUrlSource: source,
     databaseUrlFormat: dbFormat === true ? true : dbFormat,
     authUrl: Boolean(process.env.AUTH_URL),
     nodeEnv: process.env.NODE_ENV ?? "unset",
@@ -45,7 +51,6 @@ export async function GET() {
     checks.databaseUrlFormat === true &&
     checks.database === true;
 
-  // Toujours HTTP 200 — évite que Hostinger considère l'app comme down
   return Response.json({
     status: ok ? "ok" : "degraded",
     time: new Date().toISOString(),

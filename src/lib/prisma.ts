@@ -1,10 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { cleanDatabaseUrl } from "@/lib/database-url";
+import { applyDatabaseUrlEnv } from "@/lib/database-url";
 
-const databaseUrl = cleanDatabaseUrl(process.env.DATABASE_URL);
-if (databaseUrl) {
-  process.env.DATABASE_URL = databaseUrl;
-}
+applyDatabaseUrlEnv();
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 

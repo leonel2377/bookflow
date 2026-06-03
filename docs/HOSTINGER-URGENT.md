@@ -49,6 +49,28 @@ La page noire **503** = Hostinger ne trouve **aucun processus Node** qui écoute
 
 ## DATABASE_URL — cause n°1 des erreurs inscription / salons
 
+### Option A — une seule variable (recommandé)
+
+```env
+DATABASE_URL=mysql://u835607784_IGlionel:Bookflow2026@localhost:3306/u835607784_bookflow
+```
+
+### Option B — variables séparées (wizard Hostinger MySQL)
+
+Si `DATABASE_URL` pose problème, **supprimez-la** et utilisez :
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=u835607784_IGlionel
+DB_PASSWORD=Bookflow2026
+DB_NAME=u835607784_bookflow
+```
+
+L’app construit l’URL automatiquement.
+
+---
+
 Sur **Hostinger (app Node.js)**, utilisez **localhost** (pas srv2062.hstgr.io).
 
 Le `!` du mot de passe doit être encodé **`%21`** dans l’URL :

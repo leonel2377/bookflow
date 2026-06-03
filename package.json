@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "postinstall": "prisma generate",
     "start": "node scripts/start.mjs",
     "lint": "next lint",
     "db:generate": "prisma generate",
