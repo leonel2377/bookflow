@@ -109,10 +109,10 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
 Le **build peut réussir** alors que l’app Node **ne démarre pas**.
 
 1. **Start command** : `npm run start` uniquement.
-2. **Build command** : `npm run build` (inclut le mode `standalone`).
+2. **Build command** : `npm run build`.
 3. **Node 20.x** + redeploy du dernier commit.
 4. **Variables** : `AUTH_SECRET` (32+ car.), `DATABASE_URL` (`localhost`), `AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NODE_ENV=production`.
-5. **Runtime logs** (menu gauche) : chercher `[bookflow] Mode standalone` ou une erreur rouge.
+5. **Runtime logs** (menu gauche) : chercher `[bookflow] Démarrage` ou une erreur rouge.
 6. Test : `https://stkmsoft.online/api/health`
 
 **Domaine** : `stkmsoft.online` doit être attaché à l’app **Node.js bookflow**, pas à un site PHP vide.

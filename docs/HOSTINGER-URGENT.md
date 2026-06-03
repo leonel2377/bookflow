@@ -1,5 +1,52 @@
 # Hostinger — si 503 ou « Application error »
 
+## 503 « Service Unavailable » — l’app Node ne tourne pas
+
+La page noire **503** = Hostinger ne trouve **aucun processus Node** qui écoute (crash au démarrage, build raté, ou mauvais site).
+
+### Checklist (dans l’ordre)
+
+1. **hPanel → Deployments** (votre app Node.js **bookflow**)
+   - Dernier déploiement = **Build succeeded** (pas Failed)
+   - Statut = **Running** (pas Stopped / Crashed)
+
+2. **Paramètres build** (exactement) :
+
+   | Champ | Valeur |
+   |-------|--------|
+   | Install | `npm install` |
+   | Build | `npm run build` |
+   | Start | `npm run start` |
+   | Node | **20.x** |
+
+   Si le build plante par manque de mémoire, essayez :  
+   `NODE_OPTIONS=--max-old-space-size=2048 npm run build`
+
+3. **Variables d’environnement** — au minimum avant redeploy :
+
+   ```env
+   AUTH_SECRET=<32+ caractères aléatoires>
+   DATABASE_URL=mysql://u835607784_IGlionel:VOTRE_MDP@localhost:3306/u835607784_bookflow
+   AUTH_URL=https://stkmsoft.online
+   NEXT_PUBLIC_APP_URL=https://stkmsoft.online
+   NODE_ENV=production
+   ```
+
+   Sans `AUTH_SECRET`, l’app peut crasher au démarrage.
+
+4. **Runtime logs** (menu gauche de l’app Node)
+   - Chercher : `[bookflow] Démarrage` → l’app a démarré
+   - Sinon : ligne rouge (`Error`, `ENOMEM`, `EADDRINUSE`, `Cannot find module`) → copier les 15 dernières lignes
+
+5. **Domaine** `stkmsoft.online`
+   - Doit être attaché à l’**application Node.js bookflow**, pas à un site PHP / parking vide
+
+6. **Redeploy** après toute modification (Save variables → Deployments → Redeploy)
+
+7. Test : https://stkmsoft.online/api/health → doit renvoyer du **JSON** (pas 503)
+
+---
+
 ## DATABASE_URL — cause n°1 des erreurs inscription / salons
 
 Sur **Hostinger (app Node.js)**, utilisez **localhost** (pas srv2062.hstgr.io).
