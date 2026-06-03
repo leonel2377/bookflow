@@ -106,15 +106,18 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
 
 ### Erreur 503 « Service Unavailable »
 
-L’app Node **ne tourne pas** ou n’écoute pas sur le bon port.
+Le **build peut réussir** alors que l’app Node **ne démarre pas**.
 
-1. **Start command** dans hPanel : `npm run start` (sans `-- -p $PORT` en double).
-2. **Node 20.x** et dernier commit Git déployé (`fix: remove Prisma from Edge middleware`).
-3. **Variables** : `AUTH_SECRET`, `DATABASE_URL` avec `localhost`, `NODE_ENV=production`.
-4. **Deployments** → ouvrir les **Runtime / Application logs** (pas seulement Build logs).
-5. Test direct : `https://stkmsoft.online/api/health` → doit répondre `{"status":"ok",...}`.
+1. **Start command** : `npm run start` uniquement.
+2. **Build command** : `npm run build` (inclut le mode `standalone`).
+3. **Node 20.x** + redeploy du dernier commit.
+4. **Variables** : `AUTH_SECRET` (32+ car.), `DATABASE_URL` (`localhost`), `AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NODE_ENV=production`.
+5. **Runtime logs** (menu gauche) : chercher `[bookflow] Mode standalone` ou une erreur rouge.
+6. Test : `https://stkmsoft.online/api/health`
 
-Si `/api/health` fonctionne mais pas `/fr`, le problème est dans l’app (DB, auth). Si rien ne répond → processus arrêté ou mauvais port.
+**Domaine** : `stkmsoft.online` doit être attaché à l’app **Node.js bookflow**, pas à un site PHP vide.
+
+Si `/api/health` → `misconfigured` : variable manquante. Si 503 partout : processus Node arrêté (voir Runtime logs).
 
 ### Domaine & HTTPS
 
