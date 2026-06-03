@@ -1,17 +1,16 @@
-import { prisma } from "@/lib/prisma";
-
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const checks = {
+  const checks: Record<string, boolean | string> = {
     authSecret: Boolean(process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 16),
     databaseUrl: Boolean(process.env.DATABASE_URL),
     authUrl: Boolean(process.env.AUTH_URL),
     nodeEnv: process.env.NODE_ENV ?? "unset",
-    database: false as boolean | string,
+    database: false,
   };
 
   try {
+    const { prisma } = await import("@/lib/prisma");
     await prisma.$queryRaw`SELECT 1`;
     checks.database = true;
   } catch (err) {
@@ -19,8 +18,8 @@ export async function GET() {
   }
 
   const ok =
-    checks.authSecret &&
-    checks.databaseUrl &&
+    checks.authSecret === true &&
+    checks.databaseUrl === true &&
     checks.database === true;
 
   return Response.json(

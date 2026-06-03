@@ -1,5 +1,5 @@
 /**
- * Copie assets + Prisma pour le mode standalone Next.js (Hostinger).
+ * Copie assets + moteur Prisma pour le mode standalone Next.js (Hostinger).
  */
 import { cpSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
@@ -15,11 +15,12 @@ if (!existsSync(standaloneDir)) {
 function copyDir(label, src, dest) {
   if (!existsSync(src)) {
     console.warn(`[bookflow] ${label} introuvable: ${src}`);
-    return;
+    return false;
   }
   mkdirSync(path.dirname(dest), { recursive: true });
   cpSync(src, dest, { recursive: true });
   console.info(`[bookflow] ${label} copié.`);
+  return true;
 }
 
 const staticSrc = path.join(root, ".next", "static");
@@ -36,16 +37,11 @@ if (existsSync(publicSrc)) {
   cpSync(publicSrc, publicDest, { recursive: true });
 }
 
-// Prisma : obligatoire pour les pages qui lisent la base (salons, compte, pro…)
+// Copier uniquement le moteur Prisma (ne pas écraser @prisma/client tracé par Next)
 copyDir(
-  "Prisma client",
-  path.join(root, "node_modules", ".prisma"),
-  path.join(standaloneDir, "node_modules", ".prisma"),
-);
-copyDir(
-  "@prisma/client",
-  path.join(root, "node_modules", "@prisma", "client"),
-  path.join(standaloneDir, "node_modules", "@prisma", "client"),
+  "Prisma engine",
+  path.join(root, "node_modules", ".prisma", "client"),
+  path.join(standaloneDir, "node_modules", ".prisma", "client"),
 );
 
 console.info("[bookflow] Build standalone prêt.");
