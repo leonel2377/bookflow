@@ -1,8 +1,15 @@
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
-import { slugify } from "@/lib/session";
+import { uniqueEstablishmentSlug } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
+
+function registerError(message: string, status: number) {
+  return NextResponse.json({ error: message }, { status });
+}
 
 export async function POST(request: Request) {
   try {
@@ -16,7 +23,7 @@ export async function POST(request: Request) {
       phone,
       establishmentName,
     } = body as {
-      role: UserRole;
+      role: string;
       email: string;
       password: string;
       firstName: string;
@@ -26,37 +33,41 @@ export async function POST(request: Request) {
     };
 
     const normalizedEmail = email?.toLowerCase().trim();
-    if (!normalizedEmail || !password || !firstName || !lastName) {
-      return NextResponse.json({ error: "Champs obligatoires manquants" }, { status: 400 });
+    if (!normalizedEmail || !password || !firstName?.trim() || !lastName?.trim()) {
+      return registerError("Champs obligatoires manquants", 400);
     }
 
     if (password.length < 8) {
-      return NextResponse.json(
-        { error: "Le mot de passe doit contenir au moins 8 caractères" },
-        { status: 400 },
-      );
+      return registerError("Le mot de passe doit contenir au moins 8 caractères", 400);
     }
 
-    if (role !== UserRole.CLIENT && role !== UserRole.PROVIDER) {
-      return NextResponse.json({ error: "Rôle invalide" }, { status: 400 });
+    const userRole =
+      role === UserRole.PROVIDER || role === "PROVIDER"
+        ? UserRole.PROVIDER
+        : role === UserRole.CLIENT || role === "CLIENT"
+          ? UserRole.CLIENT
+          : null;
+
+    if (!userRole) {
+      return registerError("Rôle invalide", 400);
     }
 
     const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
     if (existing) {
-      return NextResponse.json({ error: "Cet e-mail est déjà utilisé" }, { status: 409 });
+      return registerError("Cet e-mail est déjà utilisé", 409);
     }
 
     const passwordHash = await hashPassword(password);
 
-    if (role === UserRole.CLIENT) {
+    if (userRole === UserRole.CLIENT) {
       await prisma.$transaction(async (tx) => {
         const user = await tx.user.create({
           data: {
             email: normalizedEmail,
             passwordHash,
             role: UserRole.CLIENT,
-            firstName,
-            lastName,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
           },
         });
         const existingClient = await tx.client.findUnique({
@@ -67,8 +78,8 @@ export async function POST(request: Request) {
             where: { id: existingClient.id },
             data: {
               userId: user.id,
-              firstName,
-              lastName,
+              firstName: firstName.trim(),
+              lastName: lastName.trim(),
               phone: phone || existingClient.phone,
             },
           });
@@ -76,8 +87,8 @@ export async function POST(request: Request) {
           await tx.client.create({
             data: {
               email: normalizedEmail,
-              firstName,
-              lastName,
+              firstName: firstName.trim(),
+              lastName: lastName.trim(),
               phone: phone || null,
               userId: user.id,
             },
@@ -87,16 +98,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true });
     }
 
-    if (!establishmentName?.trim()) {
-      return NextResponse.json(
-        { error: "Le nom de l'établissement est requis" },
-        { status: 400 },
-      );
+    const trimmedEstablishment = establishmentName?.trim();
+    if (!trimmedEstablishment) {
+      return registerError("Le nom de l'établissement est requis", 400);
     }
 
-    let slug = slugify(establishmentName);
-    const slugTaken = await prisma.establishment.findUnique({ where: { slug } });
-    if (slugTaken) slug = `${slug}-${Date.now().toString(36).slice(-4)}`;
+    const slug = await uniqueEstablishmentSlug(trimmedEstablishment, (s) =>
+      prisma.establishment.findUnique({ where: { slug: s }, select: { id: true } }),
+    );
 
     await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
@@ -104,31 +113,44 @@ export async function POST(request: Request) {
           email: normalizedEmail,
           passwordHash,
           role: UserRole.PROVIDER,
-          firstName,
-          lastName,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
         },
       });
-      await tx.establishment.create({
+
+      const establishment = await tx.establishment.create({
         data: {
           slug,
-          name: establishmentName.trim(),
+          name: trimmedEstablishment,
           email: normalizedEmail,
-          phone: phone || null,
+          phone: phone?.trim() || null,
           ownerId: user.id,
-          openings: {
-            create: [1, 2, 3, 4, 5].map((day) => ({
-              dayOfWeek: day,
-              openTime: "09:00",
-              closeTime: "19:00",
-            })),
-          },
         },
+      });
+
+      await tx.openingHours.createMany({
+        data: [1, 2, 3, 4, 5].map((dayOfWeek) => ({
+          establishmentId: establishment.id,
+          dayOfWeek,
+          openTime: "09:00",
+          closeTime: "19:00",
+        })),
       });
     });
 
     return NextResponse.json({ ok: true });
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    console.error("[register]", e);
+
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2002") {
+        return registerError("Cet e-mail ou ce nom de salon est déjà utilisé", 409);
+      }
+      if (e.code === "P1001" || e.code === "P1017") {
+        return registerError("Base de données indisponible. Réessayez dans un instant.", 503);
+      }
+    }
+
+    return registerError("Erreur serveur", 500);
   }
 }
