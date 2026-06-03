@@ -15,9 +15,15 @@ export async function GET() {
     checks.database = true;
   } catch (err) {
     const msg = err instanceof Error ? err.message : "connection failed";
-    checks.database = msg.includes("Authentication failed")
-      ? "Mot de passe MySQL incorrect — vérifiez DATABASE_URL (utilisez %21 pour ! et localhost sur Hostinger)"
-      : msg;
+    if (msg.includes("invalid port number") || msg.includes("invalid database string")) {
+      checks.database =
+        "DATABASE_URL invalide — format attendu : mysql://USER:MDP@localhost:3306/NOM_BASE (le @localhost:3306 est obligatoire)";
+    } else if (msg.includes("Authentication failed")) {
+      checks.database =
+        "Mot de passe MySQL incorrect — vérifiez DATABASE_URL (utilisez %21 pour ! et localhost sur Hostinger)";
+    } else {
+      checks.database = msg;
+    }
   }
 
   const ok =
