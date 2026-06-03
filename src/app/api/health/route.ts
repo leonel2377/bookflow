@@ -14,7 +14,10 @@ export async function GET() {
     await prisma.$queryRaw`SELECT 1`;
     checks.database = true;
   } catch (err) {
-    checks.database = err instanceof Error ? err.message : "connection failed";
+    const msg = err instanceof Error ? err.message : "connection failed";
+    checks.database = msg.includes("Authentication failed")
+      ? "Mot de passe MySQL incorrect — vérifiez DATABASE_URL (utilisez %21 pour ! et localhost sur Hostinger)"
+      : msg;
   }
 
   const ok =

@@ -146,9 +146,20 @@ export async function POST(request: Request) {
       if (e.code === "P2002") {
         return registerError("Cet e-mail ou ce nom de salon est déjà utilisé", 409);
       }
-      if (e.code === "P1001" || e.code === "P1017") {
-        return registerError("Base de données indisponible. Réessayez dans un instant.", 503);
+      if (e.code === "P1000" || e.code === "P1001" || e.code === "P1017") {
+        return registerError(
+          "Impossible de joindre la base de données. Vérifiez DATABASE_URL sur Hostinger.",
+          503,
+        );
       }
+    }
+
+    const message = e instanceof Error ? e.message : "";
+    if (message.includes("Authentication failed") || message.includes("credentials")) {
+      return registerError(
+        "Connexion base de données refusée (mot de passe MySQL incorrect dans Hostinger).",
+        503,
+      );
     }
 
     return registerError("Erreur serveur", 500);

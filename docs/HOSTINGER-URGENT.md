@@ -1,5 +1,25 @@
 # Hostinger — si 503 ou « Application error »
 
+## DATABASE_URL — cause n°1 des erreurs inscription / salons
+
+Sur **Hostinger (app Node.js)**, utilisez **localhost** (pas srv2062.hstgr.io).
+
+Le `!` du mot de passe doit être encodé **`%21`** dans l’URL :
+
+```env
+DATABASE_URL=mysql://u835607784_IGlionel:IGSotekam26%21@localhost:3306/u835607784_bookflow
+```
+
+### Vérifier
+1. hPanel → **Bases de données MySQL** → utilisateur `u835607784_IGlionel`
+2. Si besoin : **Changer le mot de passe** MySQL
+3. Mettre à jour `DATABASE_URL` dans **Environment variables** (avec `%21` pour `!`)
+4. **Redeploy**
+
+Test : https://stkmsoft.online/api/health → `"database": true`
+
+---
+
 ## Réglages EXACTS dans hPanel (Node.js Web App)
 
 | Champ | Valeur |
