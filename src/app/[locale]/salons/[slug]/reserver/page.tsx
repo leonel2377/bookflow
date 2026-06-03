@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
 import { SiteHeader } from "@/components/layout/SiteHeader";

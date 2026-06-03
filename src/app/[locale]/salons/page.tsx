@@ -8,13 +8,22 @@ export const dynamic = "force-dynamic";
 
 export default async function SalonsPage() {
   const t = await getTranslations("salons");
-  const establishments = await prisma.establishment.findMany({
-    include: {
-      services: { where: { active: true }, take: 1, orderBy: { priceCents: "asc" } },
-      photos: { orderBy: { sortOrder: "asc" }, take: 1 },
-    },
-    orderBy: { name: "asc" },
-  });
+
+  let establishments: Awaited<
+    ReturnType<typeof prisma.establishment.findMany>
+  > = [];
+
+  try {
+    establishments = await prisma.establishment.findMany({
+      include: {
+        services: { where: { active: true }, take: 1, orderBy: { priceCents: "asc" } },
+        photos: { orderBy: { sortOrder: "asc" }, take: 1 },
+      },
+      orderBy: { name: "asc" },
+    });
+  } catch (err) {
+    console.error("[salons] DB error:", err);
+  }
 
   return (
     <>

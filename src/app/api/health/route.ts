@@ -22,12 +22,10 @@ export async function GET() {
     checks.databaseUrl === true &&
     checks.database === true;
 
-  return Response.json(
-    {
-      status: ok ? "ok" : "misconfigured",
-      time: new Date().toISOString(),
-      checks,
-    },
-    { status: ok ? 200 : 503 },
-  );
+  // Toujours HTTP 200 — évite que Hostinger considère l'app comme down
+  return Response.json({
+    status: ok ? "ok" : "degraded",
+    time: new Date().toISOString(),
+    checks,
+  });
 }
