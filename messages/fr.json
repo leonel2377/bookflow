@@ -85,6 +85,7 @@
     "backHome": "Retour à l'accueil",
     "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
     "loginFailed": "E-mail ou mot de passe incorrect",
+    "invalidServerResponse": "Le serveur a répondu une erreur (page HTML). Vérifiez https://stkmsoft.online/api/health puis DATABASE_URL sur Hostinger.",
     "registerThenLoginFailed": "Compte créé mais connexion échouée. Essayez de vous connecter.",
     "forgotPassword": "Mot de passe oublié ?",
     "forgotPasswordTitle": "Mot de passe oublié",

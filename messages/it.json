@@ -85,6 +85,7 @@
     "backHome": "Torna alla home",
     "passwordMin": "La password deve contenere almeno 8 caratteri",
     "loginFailed": "E-mail o password non corretti",
+    "invalidServerResponse": "Risposta del server non valida. Controlla /api/health e DATABASE_URL su Hostinger.",
     "registerThenLoginFailed": "Account creato ma accesso fallito. Prova ad accedere.",
     "forgotPassword": "Password dimenticata?",
     "forgotPasswordTitle": "Password dimenticata",

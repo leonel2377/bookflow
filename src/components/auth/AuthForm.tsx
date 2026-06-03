@@ -42,6 +42,15 @@ export function AuthForm({
   const inputClass =
     "mt-1 w-full rounded-xl border border-foreground/12 bg-white px-3 py-2 text-sm outline-none focus:border-accent";
 
+  async function parseApiResponse(res: Response) {
+    const text = await res.text();
+    try {
+      return { data: JSON.parse(text) as { error?: string; ok?: boolean }, text };
+    } catch {
+      return { data: null, text };
+    }
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -49,7 +58,7 @@ export function AuthForm({
 
     try {
       if (mode === "register") {
-        const res = await fetch("/api/auth/register", {
+        const res = await fetch(`${window.location.origin}/api/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -63,7 +72,11 @@ export function AuthForm({
               role === UserRole.PROVIDER ? establishmentName : undefined,
           }),
         });
-        const data = await res.json();
+        const { data, text } = await parseApiResponse(res);
+        if (!data) {
+          console.error("[register] non-JSON response", res.status, text.slice(0, 200));
+          throw new Error(t("invalidServerResponse"));
+        }
         if (!res.ok) throw new Error(data.error ?? t("loginFailed"));
       }
 
