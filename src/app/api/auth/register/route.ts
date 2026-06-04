@@ -161,6 +161,13 @@ export async function POST(request: Request) {
     }
 
     if (e instanceof Prisma.PrismaClientInitializationError) {
+      const msg = e.message;
+      if (msg.includes("Authentication failed") || msg.includes("credentials")) {
+        return registerError(
+          "Mot de passe MySQL incorrect. hPanel → MySQL → changer le mot de passe de u835607784_IGlionel → mettre le même dans DB_PASSWORD → Restart.",
+          503,
+        );
+      }
       return registerError(
         "Base de données non configurée. Ajoutez DB_* ou DATABASE_URL sur Hostinger puis Restart.",
         503,
