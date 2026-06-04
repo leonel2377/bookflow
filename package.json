@@ -17,7 +17,8 @@
     "db:use-mysql": "node scripts/set-db-provider.mjs mysql",
     "db:use-sqlite": "node scripts/set-db-provider.mjs sqlite",
     "db:mysql:push": "prisma db push",
-    "db:mysql:seed": "npx tsx prisma/seed.ts"
+    "db:mysql:seed": "npx tsx prisma/seed.ts",
+    "db:check": "npx tsx scripts/check-db.ts"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"

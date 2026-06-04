@@ -146,12 +146,25 @@ export async function POST(request: Request) {
       if (e.code === "P2002") {
         return registerError("Cet e-mail ou ce nom de salon est déjà utilisé", 409);
       }
+      if (e.code === "P2021") {
+        return registerError(
+          "Les tables MySQL n'existent pas encore. Exécutez npm run db:mysql:push depuis votre PC.",
+          503,
+        );
+      }
       if (e.code === "P1000" || e.code === "P1001" || e.code === "P1017") {
         return registerError(
           "Impossible de joindre la base de données. Vérifiez DATABASE_URL sur Hostinger.",
           503,
         );
       }
+    }
+
+    if (e instanceof Prisma.PrismaClientInitializationError) {
+      return registerError(
+        "Base de données non configurée. Ajoutez DB_* ou DATABASE_URL sur Hostinger puis Restart.",
+        503,
+      );
     }
 
     const message = e instanceof Error ? e.message : "";
