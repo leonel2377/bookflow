@@ -1,5 +1,5 @@
 /**
- * Construit DATABASE_URL depuis DB_* avant prisma generate / build (Hostinger).
+ * Construit DATABASE_URL depuis DB_* avant prisma generate / build / start (Hostinger).
  */
 import { spawnSync } from "node:child_process";
 
@@ -19,7 +19,6 @@ if (user && password && name) {
   process.env.DATABASE_URL = `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
   console.info("[bookflow] DATABASE_URL défini depuis DB_*");
 } else if (!process.env.DATABASE_URL) {
-  // prisma generate n'ouvre pas la DB — placeholder pour le build Hostinger
   process.env.DATABASE_URL = "mysql://build:build@127.0.0.1:3306/build";
   console.warn("[bookflow] DATABASE_URL placeholder (build uniquement)");
 }

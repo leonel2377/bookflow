@@ -7,9 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/setup-db-env.mjs && prisma generate && next build",
-    "postinstall": "node scripts/setup-db-env.mjs generate",
-    "start": "node scripts/start.mjs",
+    "build": "node scripts/hostinger-build.mjs",
+    "start": "node scripts/setup-db-env.mjs && node scripts/start.mjs",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
