@@ -55,6 +55,9 @@ export async function GET() {
     if (msg.includes("invalid port number") || msg.includes("invalid database string")) {
       checks.database =
         "DATABASE_URL invalide — format attendu : mysql://USER:MDP@localhost:3306/NOM_BASE (le @localhost:3306 est obligatoire)";
+    } else if (msg.includes("PANIC") || msg.includes("timer has gone away") || msg.includes("openssl-1.1")) {
+      checks.database =
+        "Moteur Prisma incompatible (OpenSSL Hostinger). Redeploy après le dernier commit Git (fix binaryTargets).";
     } else if (msg.includes("Authentication failed")) {
       checks.database =
         "Mot de passe ou utilisateur MySQL incorrect. Réinitialisez le mot de passe dans hPanel, mettez DB_* (voir docs/HOSTINGER-FIX.md), supprimez DATABASE_URL, Restart.";
