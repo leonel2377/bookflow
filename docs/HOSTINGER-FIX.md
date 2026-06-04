@@ -16,6 +16,8 @@
 
 ## Variables d'environnement (toutes obligatoires)
 
+**Recommandé : variables séparées** (supprimez `DATABASE_URL` si elle existe) :
+
 ```env
 PORT=3000
 NODE_ENV=production
@@ -28,6 +30,12 @@ DB_PORT=3306
 DB_USER=u835607784_IGlionel
 DB_PASSWORD=Bookflow2026
 DB_NAME=u835607784_bookflow
+```
+
+**Alternative** — une seule variable :
+
+```env
+DATABASE_URL=mysql://u835607784_IGlionel:Bookflow2026@localhost:3306/u835607784_bookflow
 ```
 
 **Important :**

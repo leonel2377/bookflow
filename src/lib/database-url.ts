@@ -36,27 +36,47 @@ export function validateDatabaseUrlFormat(raw?: string): string | true {
   return true;
 }
 
+export function parseDatabaseUrlSafe(raw?: string): {
+  user?: string;
+  host?: string;
+  database?: string;
+} | null {
+  const url = cleanDatabaseUrl(raw);
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    return {
+      user: decodeURIComponent(parsed.username),
+      host: parsed.hostname,
+      database: parsed.pathname.replace(/^\//, ""),
+    };
+  } catch {
+    return null;
+  }
+}
+
 /** DATABASE_URL ou variables séparées Hostinger (DB_HOST, DB_USER, …). */
 export function resolveDatabaseUrl(): {
   url?: string;
   source: "DATABASE_URL" | "DB_*" | "none";
 } {
-  const direct = cleanDatabaseUrl(process.env.DATABASE_URL);
-  if (direct && validateDatabaseUrlFormat(direct) === true) {
-    return { url: direct, source: "DATABASE_URL" };
-  }
-
   const host = cleanEnvValue(process.env.DB_HOST) ?? "localhost";
   const user = cleanEnvValue(process.env.DB_USER);
   const password = cleanEnvValue(process.env.DB_PASSWORD);
   const name = cleanEnvValue(process.env.DB_NAME);
   const port = cleanEnvValue(process.env.DB_PORT) ?? "3306";
 
+  // DB_* en priorité (évite un DATABASE_URL obsolète ou mal saisi)
   if (user && password && name) {
     const url = `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
     if (validateDatabaseUrlFormat(url) === true) {
       return { url, source: "DB_*" };
     }
+  }
+
+  const direct = cleanDatabaseUrl(process.env.DATABASE_URL);
+  if (direct && validateDatabaseUrlFormat(direct) === true) {
+    return { url: direct, source: "DATABASE_URL" };
   }
 
   return { url: direct, source: direct ? "DATABASE_URL" : "none" };
