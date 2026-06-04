@@ -12,6 +12,8 @@
 
 > Si le build échoue (mémoire) : `NODE_OPTIONS=--max-old-space-size=2048 npm run build`
 
+> Si Hostinger affiche « .next manquant » : le build a échoué — gardez les variables **DB_*** (le script crée `DATABASE_URL` au build) puis **Redeploy**.
+
 ---
 
 ## Variables d'environnement (toutes obligatoires)
