@@ -96,9 +96,11 @@ Test : https://stkmsoft.online/api/health → `"database": true`
 | **Install** | `npm install` |
 | **Build** | `npm run build` |
 | **Start** | `npm run start` |
-| **Node** | **20.x** |
+| **Node** | **20.x** (pas 18 ni 24) |
 
-Dans hPanel, **Start command** = `npm run start` uniquement (Hostinger injecte `PORT` automatiquement).
+Ajoutez **`PORT=3000`** dans les variables d'environnement.
+
+Guide complet : **[HOSTINGER-FIX.md](./HOSTINGER-FIX.md)**
 
 **Ne pas utiliser** : `npm run start -- -p $PORT` (Next lit `PORT` tout seul).
 
