@@ -52,7 +52,10 @@ export default async function ProHomePage() {
 
       {!isProvider && (
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button href="/pro/connexion" variant="pro">
+          <Button href="/pro/devenir-partenaire" variant="pro">
+            {t("discover")}
+          </Button>
+          <Button href="/pro/connexion" variant="secondary">
             {t("login")}
           </Button>
           <Button href="/pro/inscription" variant="secondary">

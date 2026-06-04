@@ -1,7 +1,8 @@
 "use client";
 
-import { Calendar, CreditCard, Smartphone, Store, Users } from "lucide-react";
+import { Calendar, Check, CreditCard, Scissors, Smartphone, Store, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
 import { RevealOnScroll } from "@/components/home/RevealOnScroll";
 import { cn } from "@/lib/utils";
@@ -59,7 +60,6 @@ export function HomePageClient() {
 
   return (
     <main className="overflow-x-hidden">
-      {/* Hero */}
       <section className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div
           aria-hidden
@@ -91,11 +91,53 @@ export function HomePageClient() {
         >
           {t("subtitle")}
         </p>
-        <div
-          className="animate-fade-up relative mt-10 flex flex-wrap gap-3"
-          style={{ animationDelay: "240ms" }}
+
+        <ul
+          className="animate-fade-up relative mt-6 flex flex-wrap gap-2"
+          style={{ animationDelay: "200ms" }}
         >
-          <Button href="/pro" className="transition-transform hover:scale-[1.03] active:scale-[0.98]">
+          {[t("badgeNoCommitment"), t("badgeNoCommission"), t("badgeFast")].map((badge) => (
+            <li
+              key={badge}
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-white px-3 py-1 text-xs font-medium text-foreground/80"
+            >
+              <Check className="h-3.5 w-3.5 text-pro" />
+              {badge}
+            </li>
+          ))}
+        </ul>
+
+        <p
+          className="animate-fade-up relative mt-8 text-sm font-medium text-foreground/50"
+          style={{ animationDelay: "220ms" }}
+        >
+          {t("choosePath")}
+        </p>
+        <div
+          className="animate-fade-up relative mt-4 grid max-w-3xl gap-3 sm:grid-cols-2"
+          style={{ animationDelay: "260ms" }}
+        >
+          <Link
+            href="/pro/devenir-partenaire"
+            className="rounded-2xl border-2 border-pro bg-pro p-5 text-white transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <p className="font-semibold">{t("pathPro")}</p>
+            <p className="mt-1 text-sm text-white/75">{t("pathProDesc")}</p>
+          </Link>
+          <Link
+            href="/salons"
+            className="rounded-2xl border-2 border-foreground/10 bg-white p-5 transition-transform hover:border-accent hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <p className="font-semibold">{t("pathClient")}</p>
+            <p className="mt-1 text-sm text-foreground/65">{t("pathClientDesc")}</p>
+          </Link>
+        </div>
+
+        <div
+          className="animate-fade-up relative mt-8 flex flex-wrap gap-3"
+          style={{ animationDelay: "300ms" }}
+        >
+          <Button href="/pro/inscription" variant="pro" className="transition-transform hover:scale-[1.03] active:scale-[0.98]">
             {t("proCta")}
           </Button>
           <Button
@@ -108,7 +150,6 @@ export function HomePageClient() {
         </div>
       </section>
 
-      {/* B2B / B2C */}
       <section className="border-y border-foreground/5 bg-white">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-2">
           <RevealOnScroll>
@@ -130,8 +171,11 @@ export function HomePageClient() {
                   />
                 ))}
               </ul>
-              <div className="mt-8">
-                <Button href="/pro/tarifs" variant="pro" className="transition-transform hover:scale-[1.03]">
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button href="/pro/devenir-partenaire" variant="pro" className="transition-transform hover:scale-[1.03]">
+                  {t("becomePartner")}
+                </Button>
+                <Button href="/pro/tarifs" variant="secondary" className="transition-transform hover:scale-[1.03]">
                   {t("seeProOffers")}
                 </Button>
               </div>
@@ -145,6 +189,10 @@ export function HomePageClient() {
               </span>
               <h2 className="mt-4 text-2xl font-semibold">{t("b2cTitle")}</h2>
               <p className="mt-2 text-foreground/70">{t("b2cDesc")}</p>
+              <p className="mt-4 flex items-center gap-2 text-xs text-foreground/55">
+                <Scissors className="h-3.5 w-3.5" />
+                {t("sectors")}
+              </p>
               <ul className="mt-8 space-y-6">
                 {clientFeatures.map(({ icon, key }, i) => (
                   <FeatureItem

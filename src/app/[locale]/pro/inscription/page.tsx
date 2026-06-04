@@ -20,6 +20,10 @@ export default async function ProInscriptionPage() {
         />
       </Suspense>
       <p className="mt-8 text-center text-xs text-foreground/50">
+        <Link href="/pro/devenir-partenaire" className="underline">
+          {t("discoverPartner")}
+        </Link>
+        {" · "}
         <Link href="/pro/tarifs" className="underline">
           {t("seePlans")}
         </Link>

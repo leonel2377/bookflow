@@ -31,6 +31,11 @@ export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client"
             </Link>
           )}
           {mode !== "client" && (
+            <Link href="/pro/devenir-partenaire" className="hover:text-foreground">
+              {t("becomePartner")}
+            </Link>
+          )}
+          {mode !== "client" && (
             <Link href="/pro" className="hover:text-foreground">
               {t("proSpace")}
             </Link>
