@@ -98,7 +98,7 @@ Test : https://stkmsoft.online/api/health → `"database": true`
 | **Start** | `npm run start` |
 | **Node** | **20.x** |
 
-> Le script `start` écoute sur `0.0.0.0` et le `PORT` Hostinger automatiquement.
+Dans hPanel, **Start command** = `npm run start` uniquement (Hostinger injecte `PORT` automatiquement).
 
 **Ne pas utiliser** : `npm run start -- -p $PORT` (Next lit `PORT` tout seul).
 
