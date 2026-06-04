@@ -59,8 +59,12 @@ export async function GET() {
       checks.database =
         "Moteur Prisma incompatible (OpenSSL Hostinger). Redeploy après le dernier commit Git (fix binaryTargets).";
     } else if (msg.includes("Authentication failed")) {
-      checks.database =
-        "Mot de passe ou utilisateur MySQL incorrect. Réinitialisez le mot de passe dans hPanel, mettez DB_* (voir docs/HOSTINGER-FIX.md), supprimez DATABASE_URL, Restart.";
+      checks.database = "Mot de passe MySQL incorrect.";
+      checks.fixSteps = [
+        "hPanel → MySQL → u835607784_IGlionel → mot de passe : Bookflow2026",
+        "App Node.js → DB_PASSWORD=Bookflow2026",
+        "Restart → /api/health → database:true",
+      ];
     } else {
       checks.database = msg;
     }
