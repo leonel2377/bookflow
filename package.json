@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
-    "postinstall": "prisma generate",
+    "build": "node scripts/setup-db-env.mjs && prisma generate && next build",
+    "postinstall": "node scripts/setup-db-env.mjs generate",
     "start": "node scripts/start.mjs",
     "lint": "next lint",
     "db:generate": "prisma generate",
