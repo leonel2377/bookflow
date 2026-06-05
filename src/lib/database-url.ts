@@ -101,9 +101,24 @@ export function resolveDatabaseUrl(): {
 }
 
 export function applyDatabaseUrlEnv(): string | undefined {
-  const { url } = resolveDatabaseUrl();
-  if (url) {
-    process.env.DATABASE_URL = url;
+  const user = cleanEnvValue(process.env.DB_USER);
+  const password = cleanEnvValue(process.env.DB_PASSWORD);
+  const name = cleanEnvValue(process.env.DB_NAME);
+
+  // DB_* prioritaire : ignorer un ancien DATABASE_URL Hostinger
+  if (user && password && name) {
+    const { url } = resolveDatabaseUrl();
+    if (url) {
+      process.env.DATABASE_URL = url;
+      return url;
+    }
   }
-  return url;
+
+  const direct = cleanDatabaseUrl(process.env.DATABASE_URL);
+  if (direct) {
+    process.env.DATABASE_URL = direct;
+    return direct;
+  }
+
+  return undefined;
 }

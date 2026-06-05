@@ -63,7 +63,7 @@ export async function GET() {
 
   if (process.env.DATABASE_URL && source === "DB_*") {
     checks.warning =
-      "DATABASE_URL est encore défini — supprimez-le pour éviter toute confusion (gardez seulement DB_*).";
+      "SUPPRIMEZ la variable DATABASE_URL dans hPanel (garder seulement DB_*). Elle est encore définie et peut bloquer la connexion.";
   }
 
   const hint = mysqlUserHint(parsed?.user, parsed?.database);
