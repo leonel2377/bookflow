@@ -22,7 +22,7 @@ export async function GET() {
   const parsed = parseDatabaseUrlSafe(url);
   const dbFormat = url ? validateDatabaseUrlFormat(url) : "DATABASE_URL / DB_* manquant";
 
-  const checks: Record<string, boolean | string> = {
+  const checks: Record<string, boolean | string | string[]> = {
     authSecret: Boolean(process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 16),
     databaseUrl: Boolean(url),
     databaseUrlSource: source,
