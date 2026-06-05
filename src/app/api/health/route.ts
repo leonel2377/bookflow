@@ -1,6 +1,26 @@
-import { parseDatabaseUrlSafe, resolveDatabaseUrl, validateDatabaseUrlFormat } from "@/lib/database-url";
+import {
+  buildDatabaseUrl,
+  cleanEnvValue,
+  databaseHostsToTry,
+  parseDatabaseUrlSafe,
+  resolveDatabaseUrl,
+  validateDatabaseUrlFormat,
+} from "@/lib/database-url";
+import { PrismaClient } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
+
+async function tryMysqlConnection(url: string): Promise<void> {
+  const client = new PrismaClient({
+    datasources: { db: { url } },
+    log: [],
+  });
+  try {
+    await client.$queryRaw`SELECT 1`;
+  } finally {
+    await client.$disconnect();
+  }
+}
 
 function mysqlUserHint(user?: string, database?: string): string | undefined {
   if (!user) return undefined;
@@ -14,7 +34,12 @@ function mysqlUserHint(user?: string, database?: string): string | undefined {
 }
 
 export async function GET() {
-  const { url, source } = resolveDatabaseUrl();
+  const { url, source, host: preferredHost } = resolveDatabaseUrl();
+  const user = cleanEnvValue(process.env.DB_USER);
+  const password = cleanEnvValue(process.env.DB_PASSWORD);
+  const name = cleanEnvValue(process.env.DB_NAME);
+  const port = cleanEnvValue(process.env.DB_PORT) ?? "3306";
+
   if (url) {
     process.env.DATABASE_URL = url;
   }
@@ -22,18 +47,24 @@ export async function GET() {
   const parsed = parseDatabaseUrlSafe(url);
   const dbFormat = url ? validateDatabaseUrlFormat(url) : "DATABASE_URL / DB_* manquant";
 
-  const checks: Record<string, boolean | string | string[]> = {
+  const checks: Record<string, boolean | string | string[] | number> = {
     authSecret: Boolean(process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 16),
     databaseUrl: Boolean(url),
     databaseUrlSource: source,
     mysqlUser: parsed?.user ?? "non défini",
     mysqlHost: parsed?.host ?? "non défini",
     mysqlDatabase: parsed?.database ?? "non défini",
+    dbPasswordLength: password?.length ?? 0,
     databaseUrlFormat: dbFormat === true ? true : dbFormat,
     authUrl: Boolean(process.env.AUTH_URL),
     nodeEnv: process.env.NODE_ENV ?? "unset",
     database: false,
   };
+
+  if (process.env.DATABASE_URL && source === "DB_*") {
+    checks.warning =
+      "DATABASE_URL est encore défini — supprimez-le pour éviter toute confusion (gardez seulement DB_*).";
+  }
 
   const hint = mysqlUserHint(parsed?.user, parsed?.database);
   if (hint) checks.mysqlUserHint = hint;
@@ -46,25 +77,47 @@ export async function GET() {
     });
   }
 
-  try {
-    const { prisma } = await import("@/lib/prisma");
-    await prisma.$queryRaw`SELECT 1`;
-    checks.database = true;
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "connection failed";
+  const hostsToTry =
+    user && password && name
+      ? databaseHostsToTry(preferredHost)
+      : [parsed?.host ?? "127.0.0.1"];
+
+  let lastError = "connection failed";
+  for (const host of hostsToTry) {
+    const testUrl =
+      user && password && name
+        ? buildDatabaseUrl(host, user, password, name, port)
+        : url!;
+    try {
+      await tryMysqlConnection(testUrl);
+      checks.database = true;
+      checks.mysqlHostUsed = host;
+      process.env.DATABASE_URL = testUrl;
+      lastError = "";
+      break;
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : "connection failed";
+    }
+  }
+
+  if (lastError) {
+    const msg = lastError;
     if (msg.includes("invalid port number") || msg.includes("invalid database string")) {
       checks.database =
-        "DATABASE_URL invalide — format attendu : mysql://USER:MDP@localhost:3306/NOM_BASE (le @localhost:3306 est obligatoire)";
+        "DATABASE_URL invalide — format attendu : mysql://USER:MDP@127.0.0.1:3306/NOM_BASE";
     } else if (msg.includes("PANIC") || msg.includes("timer has gone away") || msg.includes("openssl-1.1")) {
       checks.database =
-        "Moteur Prisma incompatible (OpenSSL Hostinger). Redeploy après le dernier commit Git (fix binaryTargets).";
-    } else if (msg.includes("Authentication failed")) {
-      checks.database = "Mot de passe MySQL incorrect.";
+        "Moteur Prisma incompatible (OpenSSL Hostinger). Redeploy après le dernier commit Git.";
+    } else if (msg.includes("Authentication failed") || msg.includes("credentials")) {
+      checks.database = "Mot de passe ou utilisateur MySQL refusé.";
       checks.fixSteps = [
-        "hPanel → MySQL → u835607784_IGlionel → mot de passe : Bookflow2026",
-        "App Node.js → DB_PASSWORD=Bookflow2026",
-        "Restart → /api/health → database:true",
+        "1. hPanel → Bases de données MySQL (pas Remote MySQL) → u835607784_IGlionel → Changer mot de passe",
+        "2. Test phpMyAdmin avec CE mot de passe (user IGlionel, pas bookflow)",
+        "3. App Node.js : SUPPRIMER DATABASE_URL, DB_PASSWORD=même mot de passe, DB_HOST=127.0.0.1",
+        "4. Save → Restart (pas seulement Redeploy)",
+        `5. dbPasswordLength=${password?.length ?? 0} — si 0, DB_PASSWORD est vide sur Hostinger`,
       ];
+      checks.hostsTried = hostsToTry;
     } else {
       checks.database = msg;
     }

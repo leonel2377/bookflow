@@ -55,28 +55,46 @@ export function parseDatabaseUrlSafe(raw?: string): {
   }
 }
 
+export function buildDatabaseUrl(
+  host: string,
+  user: string,
+  password: string,
+  name: string,
+  port = "3306",
+): string {
+  return `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
+}
+
+/** Hôtes à essayer sur Hostinger (localhost vs 127.0.0.1). */
+export function databaseHostsToTry(preferred?: string): string[] {
+  const hosts = [preferred ?? "127.0.0.1", "localhost", "127.0.0.1"].filter(Boolean);
+  return [...new Set(hosts)];
+}
+
 /** DATABASE_URL ou variables séparées Hostinger (DB_HOST, DB_USER, …). */
 export function resolveDatabaseUrl(): {
   url?: string;
   source: "DATABASE_URL" | "DB_*" | "none";
+  host?: string;
 } {
-  const host = cleanEnvValue(process.env.DB_HOST) ?? "localhost";
+  const host =
+    cleanEnvValue(process.env.DB_HOST) ??
+    (process.env.NODE_ENV === "production" ? "127.0.0.1" : "localhost");
   const user = cleanEnvValue(process.env.DB_USER);
   const password = cleanEnvValue(process.env.DB_PASSWORD);
   const name = cleanEnvValue(process.env.DB_NAME);
   const port = cleanEnvValue(process.env.DB_PORT) ?? "3306";
 
-  // DB_* en priorité (évite un DATABASE_URL obsolète ou mal saisi)
   if (user && password && name) {
-    const url = `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
+    const url = buildDatabaseUrl(host, user, password, name, port);
     if (validateDatabaseUrlFormat(url) === true) {
-      return { url, source: "DB_*" };
+      return { url, source: "DB_*", host };
     }
   }
 
   const direct = cleanDatabaseUrl(process.env.DATABASE_URL);
   if (direct && validateDatabaseUrlFormat(direct) === true) {
-    return { url: direct, source: "DATABASE_URL" };
+    return { url: direct, source: "DATABASE_URL", host: parseDatabaseUrlSafe(direct)?.host };
   }
 
   return { url: direct, source: direct ? "DATABASE_URL" : "none" };
