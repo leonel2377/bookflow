@@ -3,6 +3,14 @@
     "title": "BOOKFLOW — Beauty & wellness booking",
     "description": "Two-sided platform: salon management for professionals, online booking for clients."
   },
+  "pwa": {
+    "installTitle": "Install BOOKFLOW",
+    "installDesc": "Access bookings from your home screen, like a native app.",
+    "installCta": "Install",
+    "installLater": "Later",
+    "installClose": "Close",
+    "installIosHint": "On iPhone: Share button → \"Add to Home Screen\"."
+  },
   "lang": {
     "label": "Language",
     "fr": "Français",

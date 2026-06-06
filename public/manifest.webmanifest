@@ -1,0 +1,33 @@
+{
+  "name": "BOOKFLOW — Réservation beauté",
+  "short_name": "BOOKFLOW",
+  "description": "Trouvez un salon et réservez en ligne. Espace pro pour gérer votre planning.",
+  "start_url": "/fr",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#faf9f7",
+  "theme_color": "#8b5a6b",
+  "lang": "fr",
+  "categories": ["business", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

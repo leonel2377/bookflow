@@ -3,6 +3,14 @@
     "title": "BOOKFLOW — Prenotazioni bellezza e benessere",
     "description": "Piattaforma a due facce: gestione salone per professionisti, prenotazioni online per clienti."
   },
+  "pwa": {
+    "installTitle": "Installa BOOKFLOW",
+    "installDesc": "Accedi alle prenotazioni dalla home, come un'app.",
+    "installCta": "Installa",
+    "installLater": "Più tardi",
+    "installClose": "Chiudi",
+    "installIosHint": "Su iPhone: Condividi → \"Aggiungi a Home\"."
+  },
   "lang": {
     "label": "Lingua",
     "fr": "Français",

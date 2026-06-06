@@ -3,6 +3,14 @@
     "title": "BOOKFLOW — Réservation beauté & bien-être",
     "description": "Plateforme deux faces : gestion salon pour les professionnels, réservation en ligne pour les clients."
   },
+  "pwa": {
+    "installTitle": "Installer BOOKFLOW",
+    "installDesc": "Accédez à vos réservations depuis l'écran d'accueil, comme une application.",
+    "installCta": "Installer",
+    "installLater": "Plus tard",
+    "installClose": "Fermer",
+    "installIosHint": "Sur iPhone : bouton Partager → « Sur l'écran d'accueil »."
+  },
   "lang": {
     "label": "Langue",
     "fr": "Français",

@@ -3,6 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { PwaInstallBanner } from "@/components/pwa/PwaInstallBanner";
+import { PwaRegister } from "@/components/pwa/PwaRegister";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -29,6 +31,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t("title"),
     description: t("description"),
+    manifest: "/manifest.webmanifest",
+    applicationName: "BOOKFLOW",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "BOOKFLOW",
+    },
+    formatDetection: {
+      telephone: false,
+    },
+    icons: {
+      icon: [
+        { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
   };
 }
 
@@ -45,7 +64,11 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale}>
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <PwaRegister />
+            {children}
+            <PwaInstallBanner />
+          </SessionProvider>
         </NextIntlClientProvider>
       </body>
     </html>
