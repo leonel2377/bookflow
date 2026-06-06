@@ -6,6 +6,7 @@ import {
   resolveDatabaseUrl,
   validateDatabaseUrlFormat,
 } from "@/lib/database-url";
+import { getSmtpHealthChecks } from "@/lib/smtp-config";
 import { PrismaClient } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +60,7 @@ export async function GET() {
     authUrl: Boolean(process.env.AUTH_URL),
     nodeEnv: process.env.NODE_ENV ?? "unset",
     database: false,
+    ...getSmtpHealthChecks(),
   };
 
   if (process.env.DATABASE_URL && source === "DB_*") {
@@ -127,11 +129,13 @@ export async function GET() {
     checks.authSecret === true &&
     checks.databaseUrl === true &&
     checks.databaseUrlFormat === true &&
-    checks.database === true;
+    checks.database === true &&
+    checks.smtpReady === true;
 
   return Response.json({
     status: ok ? "ok" : "degraded",
     time: new Date().toISOString(),
     checks,
+    passwordResetReady: checks.database === true && checks.smtpReady === true,
   });
 }

@@ -146,6 +146,8 @@
     "sendResetLink": "Send reset link",
     "forgotPasswordSent": "If an account exists for this email, you will receive a reset link shortly. Check your spam folder.",
     "forgotPasswordError": "Could not send the email. Please try again later.",
+    "forgotPasswordServiceError": "Service temporarily unavailable. Please try again later or contact support.",
+    "forgotPasswordSmtpError": "Email sending is not configured on the server. Please contact support.",
     "backToLogin": "Back to login",
     "resetPasswordTitle": "New password",
     "resetPasswordDesc": "Choose a password with at least 8 characters.",

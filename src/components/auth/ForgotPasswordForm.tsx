@@ -33,10 +33,19 @@ export function ForgotPasswordForm({
         body: JSON.stringify({ email, locale }),
       });
 
-      if (!res.ok) throw new Error(t("forgotPasswordError"));
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null;
+        if (res.status === 503 || data?.code === "database") {
+          throw new Error(t("forgotPasswordServiceError"));
+        }
+        if (res.status === 502 || data?.code === "smtp") {
+          throw new Error(t("forgotPasswordSmtpError"));
+        }
+        throw new Error(t("forgotPasswordError"));
+      }
       setSent(true);
-    } catch {
-      setError(t("forgotPasswordError"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("forgotPasswordError"));
     } finally {
       setLoading(false);
     }

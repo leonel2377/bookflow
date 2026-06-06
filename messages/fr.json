@@ -145,6 +145,8 @@
     "sendResetLink": "Envoyer le lien",
     "forgotPasswordSent": "Si un compte existe avec cet e-mail, vous recevrez un lien de réinitialisation sous peu. Pensez à vérifier vos spams.",
     "forgotPasswordError": "Impossible d'envoyer l'e-mail. Réessayez plus tard.",
+    "forgotPasswordServiceError": "Service temporairement indisponible. La base de données doit être rétablie — contactez le support ou réessayez plus tard.",
+    "forgotPasswordSmtpError": "L'envoi d'e-mail n'est pas configuré sur le serveur. Contactez le support.",
     "backToLogin": "Retour à la connexion",
     "resetPasswordTitle": "Nouveau mot de passe",
     "resetPasswordDesc": "Choisissez un mot de passe d'au moins 8 caractères.",

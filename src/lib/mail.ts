@@ -1,5 +1,11 @@
 import nodemailer from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";
+import {
+  getSmtpConfig,
+  isSmtpConfigured,
+  MailNotConfiguredError,
+  MailSendError,
+} from "@/lib/smtp-config";
 
 type SendMailOptions = {
   to: string;
@@ -8,29 +14,23 @@ type SendMailOptions = {
   html: string;
 };
 
-function isSmtpConfigured(): boolean {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER);
-}
-
 function createTransport() {
-  const port = Number(process.env.SMTP_PORT ?? "587");
+  const { host, user, pass, port } = getSmtpConfig();
+
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: host!,
     port,
     secure: port === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
+    auth: { user: user!, pass: pass! },
+    tls: port === 587 ? { minVersion: "TLSv1.2" } : undefined,
   });
 }
 
 export async function sendMail(options: SendMailOptions): Promise<void> {
-  const from =
-    process.env.MAIL_FROM ?? `"BOOKFLOW" <${process.env.SMTP_USER ?? "noreply@bookflow.local"}>`;
+  const { from } = getSmtpConfig();
 
   const message: Mail.Options = {
-    from,
+    from: from ?? `"BOOKFLOW" <noreply@bookflow.local>`,
     to: options.to,
     subject: options.subject,
     text: options.text,
@@ -38,6 +38,10 @@ export async function sendMail(options: SendMailOptions): Promise<void> {
   };
 
   if (!isSmtpConfigured()) {
+    if (process.env.NODE_ENV === "production") {
+      throw new MailNotConfiguredError();
+    }
+
     console.info("\n--- E-mail (mode dev, SMTP non configuré) ---");
     console.info(`À: ${options.to}`);
     console.info(`Objet: ${options.subject}`);
@@ -46,6 +50,12 @@ export async function sendMail(options: SendMailOptions): Promise<void> {
     return;
   }
 
-  const transport = createTransport();
-  await transport.sendMail(message);
+  try {
+    const transport = createTransport();
+    await transport.sendMail(message);
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[mail] send failed:", detail);
+    throw new MailSendError(`Échec envoi e-mail : ${detail}`, err);
+  }
 }
