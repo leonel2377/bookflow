@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/hostinger-build.mjs",
-    "start": "node scripts/setup-db-env.mjs && node scripts/start.mjs",
+    "start": "node scripts/start.mjs",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

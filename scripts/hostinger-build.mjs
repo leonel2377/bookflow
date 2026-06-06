@@ -5,8 +5,11 @@ import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { applyDbEnvFromHostinger } from "./setup-db-env.mjs";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+applyDbEnvFromHostinger();
 
 function run(label, cmd, args) {
   console.info(`[bookflow] ${label}…`);
@@ -16,8 +19,6 @@ function run(label, cmd, args) {
     process.exit(r.status ?? 1);
   }
 }
-
-await import("./setup-db-env.mjs");
 
 run("prisma generate", "npx", ["prisma", "generate"]);
 run("next build", "npx", ["next", "build"]);
