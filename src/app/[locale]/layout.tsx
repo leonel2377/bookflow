@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://stkmsoft.online"),
     title: t("title"),
     description: t("description"),
     manifest: "/manifest.webmanifest",
