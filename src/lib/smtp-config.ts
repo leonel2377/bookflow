@@ -42,12 +42,14 @@ export function isSmtpConfigured(): boolean {
   return Boolean(host && user && pass);
 }
 
-export function getSmtpHealthChecks(): Record<string, boolean | string | number> {
+export type SmtpHealthChecks = Record<string, boolean | string | string[] | number>;
+
+export function getSmtpHealthChecks(): SmtpHealthChecks {
   const { host, user, pass, port, from } = getSmtpConfig();
   const rawPort = cleanEnvValue(process.env.SMTP_PORT) ?? "465";
   const appUrl = cleanEnvValue(process.env.NEXT_PUBLIC_APP_URL) ?? cleanEnvValue(process.env.AUTH_URL);
 
-  const checks: Record<string, boolean | string | number> = {
+  const checks: SmtpHealthChecks = {
     smtpHost: Boolean(host),
     smtpUser: Boolean(user),
     smtpPass: Boolean(pass),
