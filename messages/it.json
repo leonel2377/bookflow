@@ -21,7 +21,14 @@
     "iAmPro": "Sono un professionista",
     "becomePartner": "Diventa partner",
     "book": "Prenota",
-    "logout": "Esci"
+    "logout": "Esci",
+    "menuOpen": "Apri menu",
+    "menuClose": "Chiudi menu",
+    "language": "Lingua",
+    "dashboard": "Dashboard",
+    "establishment": "Il mio salone",
+    "proHome": "Home",
+    "proNav": "Navigazione pro"
   },
   "home": {
     "tagline": "Bellezza e benessere",

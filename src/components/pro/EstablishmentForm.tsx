@@ -29,8 +29,7 @@ export function EstablishmentForm({ establishment }: { establishment: Establishm
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const inputClass =
-    "mt-1 w-full rounded-xl border border-foreground/12 bg-white px-3 py-2 text-sm outline-none focus:border-pro";
+  const inputClass = "input-field";
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

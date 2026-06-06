@@ -21,7 +21,14 @@
     "iAmPro": "I'm a professional",
     "becomePartner": "Become a partner",
     "book": "Book now",
-    "logout": "Log out"
+    "logout": "Log out",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "language": "Language",
+    "dashboard": "Dashboard",
+    "establishment": "My salon",
+    "proHome": "Home",
+    "proNav": "Pro navigation"
   },
   "home": {
     "tagline": "Beauty & wellness",

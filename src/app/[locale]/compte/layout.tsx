@@ -7,7 +7,7 @@ export default async function CompteLayout({ children }: { children: React.React
   return (
     <>
       <SiteHeader mode="client" />
-      <div className="mx-auto max-w-3xl px-4 py-10">{children}</div>
+      <div className="mx-auto max-w-3xl px-4 py-6 safe-bottom sm:py-10">{children}</div>
     </>
   );
 }

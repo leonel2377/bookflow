@@ -118,11 +118,10 @@ export function BookingForm({
     }
   }
 
-  const inputClass =
-    "mt-1 w-full rounded-xl border border-foreground/12 bg-white px-3 py-2 text-sm outline-none focus:border-accent";
+  const inputClass = "input-field";
 
   return (
-    <form onSubmit={onSubmit} className="mt-8 space-y-5">
+    <form onSubmit={onSubmit} className="mt-6 space-y-5 sm:mt-8">
       <label className="block text-sm">
         {t("service")}
         <select
@@ -157,7 +156,7 @@ export function BookingForm({
         </label>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block text-sm">
           {t("date")}
           <input
@@ -199,7 +198,7 @@ export function BookingForm({
 
       <fieldset className="space-y-3 rounded-xl border border-foreground/8 p-4">
         <legend className="px-1 text-sm font-medium">{t("yourDetails")}</legend>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="block text-sm">
             {tAuth("firstName")}
             <input

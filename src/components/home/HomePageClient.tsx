@@ -77,7 +77,7 @@ export function HomePageClient() {
           {t("tagline")}
         </p>
         <h1
-          className="animate-fade-up relative mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl"
+          className="animate-fade-up relative mt-4 max-w-3xl text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl"
           style={{ animationDelay: "80ms" }}
         >
           {t("title")}{" "}

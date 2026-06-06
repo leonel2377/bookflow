@@ -21,7 +21,14 @@
     "iAmPro": "Je suis professionnel",
     "becomePartner": "Devenir partenaire",
     "book": "Réserver",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "menuOpen": "Ouvrir le menu",
+    "menuClose": "Fermer le menu",
+    "language": "Langue",
+    "dashboard": "Tableau de bord",
+    "establishment": "Mon salon",
+    "proHome": "Accueil",
+    "proNav": "Navigation pro"
   },
   "home": {
     "tagline": "Beauté & bien-être",

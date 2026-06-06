@@ -29,10 +29,10 @@ export default async function SalonDetailPage({ params }: Props) {
   return (
     <>
       <SiteHeader mode="client" />
-      <main className="mx-auto max-w-6xl px-4 py-10">
-        <div className="grid gap-10 lg:grid-cols-5">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:py-10">
+        <div className="grid gap-8 lg:grid-cols-5 lg:gap-10">
           <div className="lg:col-span-3">
-            <h1 className="text-3xl font-semibold">{establishment.name}</h1>
+            <h1 className="text-2xl font-semibold sm:text-3xl">{establishment.name}</h1>
             {establishment.description && (
               <p className="mt-3 text-foreground/70">{establishment.description}</p>
             )}
