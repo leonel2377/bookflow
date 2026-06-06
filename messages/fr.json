@@ -172,7 +172,15 @@
     "smsNote": "Rappels SMS après confirmation",
     "manageAccount": "votre espace",
     "bookAt": "Réserver chez {name}",
-    "bookDesc": "Choisissez une prestation, une date et un créneau. Un SMS de rappel pourra vous être envoyé si vous l'activez."
+    "bookDesc": "Choisissez une prestation, une date et un créneau. Un SMS de rappel pourra vous être envoyé si vous l'activez.",
+    "nearMe": "Près de moi",
+    "geoLoading": "Localisation en cours…",
+    "geoDenied": "Autorisez la localisation dans votre navigateur pour voir les salons à proximité.",
+    "geoUnsupported": "Votre navigateur ne prend pas en charge la géolocalisation.",
+    "geoError": "Impossible d'obtenir votre position. Réessayez ou consultez tous les salons.",
+    "geoEmpty": "Aucun salon trouvé dans un rayon de 50 km. Essayez « Voir tous les salons ».",
+    "showAll": "Voir tous les salons",
+    "sortedByDistance": "Salons triés par distance"
   },
   "booking": {
     "service": "Prestation",

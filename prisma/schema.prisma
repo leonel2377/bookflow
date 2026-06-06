@@ -62,6 +62,8 @@ model Establishment {
   description String?
   address     String?
   city        String?
+  latitude    Float?
+  longitude   Float?
   phone       String?
   email       String?
   coverUrl    String?

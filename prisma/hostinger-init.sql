@@ -34,6 +34,8 @@ CREATE TABLE `Establishment` (
     `description` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
     `city` VARCHAR(191) NULL,
+    `latitude` DOUBLE NULL,
+    `longitude` DOUBLE NULL,
     `phone` VARCHAR(191) NULL,
     `email` VARCHAR(191) NULL,
     `coverUrl` VARCHAR(191) NULL,

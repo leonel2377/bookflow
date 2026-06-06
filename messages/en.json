@@ -173,7 +173,15 @@
     "smsNote": "SMS reminders after confirmation",
     "manageAccount": "your account",
     "bookAt": "Book at {name}",
-    "bookDesc": "Choose a service, date and time slot. An SMS reminder can be sent if enabled."
+    "bookDesc": "Choose a service, date and time slot. An SMS reminder can be sent if enabled.",
+    "nearMe": "Near me",
+    "geoLoading": "Getting your location…",
+    "geoDenied": "Allow location access in your browser to see nearby salons.",
+    "geoUnsupported": "Your browser does not support geolocation.",
+    "geoError": "Could not get your location. Try again or browse all salons.",
+    "geoEmpty": "No salons found within 50 km. Try « Show all salons ».",
+    "showAll": "Show all salons",
+    "sortedByDistance": "Salons sorted by distance"
   },
   "booking": {
     "service": "Service",

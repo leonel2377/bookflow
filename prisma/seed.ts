@@ -34,7 +34,11 @@ async function main() {
 
   const salon = await prisma.establishment.upsert({
     where: { slug: "studio-eclat" },
-    update: { ownerId: proUser.id },
+    update: {
+      ownerId: proUser.id,
+      latitude: 45.764,
+      longitude: 4.8357,
+    },
     create: {
       slug: "studio-eclat",
       name: "Studio Éclat",
@@ -42,6 +46,8 @@ async function main() {
         "Salon de coiffure et soins bien-être au centre-ville. Colorations, coupes et soins visage.",
       address: "12 rue des Lilas",
       city: "Lyon",
+      latitude: 45.764,
+      longitude: 4.8357,
       phone: "04 00 00 00 00",
       email: "contact@studio-eclat.demo",
       plan: SubscriptionPlan.PREMIUM,

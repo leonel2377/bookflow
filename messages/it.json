@@ -172,7 +172,15 @@
     "smsNote": "Promemoria SMS dopo la conferma",
     "manageAccount": "il tuo account",
     "bookAt": "Prenota da {name}",
-    "bookDesc": "Scegli servizio, data e orario. Può essere inviato un promemoria SMS se attivato."
+    "bookDesc": "Scegli servizio, data e orario. Può essere inviato un promemoria SMS se attivato.",
+    "nearMe": "Vicino a me",
+    "geoLoading": "Localizzazione in corso…",
+    "geoDenied": "Consenti la geolocalizzazione nel browser per vedere i saloni vicini.",
+    "geoUnsupported": "Il browser non supporta la geolocalizzazione.",
+    "geoError": "Impossibile ottenere la posizione. Riprova o consulta tutti i saloni.",
+    "geoEmpty": "Nessun salone entro 50 km. Prova « Mostra tutti i saloni ».",
+    "showAll": "Mostra tutti i saloni",
+    "sortedByDistance": "Saloni ordinati per distanza"
   },
   "booking": {
     "service": "Servizio",
