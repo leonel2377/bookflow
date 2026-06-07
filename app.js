@@ -1,8 +1,7 @@
 /**
- * Point d'entrée Hostinger (app.js).
+ * Point d'entrée Hostinger — lance le serveur Next.js standalone.
  * hPanel Start : npm run start -- -p $PORT
  */
-const { spawnSync } = require("node:child_process");
 const path = require("node:path");
 const fs = require("node:fs");
 
@@ -23,31 +22,29 @@ async function main() {
   process.env.PORT = port;
   process.env.HOSTNAME = "0.0.0.0";
 
-  console.info("=".repeat(60));
-  console.info("[bookflow] app.js — démarrage Hostinger");
-  console.info("[bookflow] port :", port);
-  console.info("[bookflow] node :", process.version);
-  console.info("[bookflow] AUTH :", process.env.AUTH_SECRET ? "OK" : "MANQUANT !!!");
-  console.info("[bookflow] .next:", fs.existsSync(path.join(root, ".next", "BUILD_ID")) ? "OK" : "ABSENT !!!");
-  console.info("=".repeat(60));
+  const standaloneDir = path.join(root, ".next", "standalone");
+  const standaloneServer = path.join(standaloneDir, "server.js");
+
+  console.info("[bookflow] app.js — port:", port, "| standalone:", fs.existsSync(standaloneServer));
 
   if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
-    console.error("[bookflow] AUTH_SECRET manquant — ajoutez-le dans Variables d'environnement hPanel");
+    console.error("[bookflow] AUTH_SECRET manquant dans hPanel");
     process.exit(1);
   }
 
-  if (!fs.existsSync(path.join(root, ".next", "BUILD_ID"))) {
-    console.error("[bookflow] Build absent — redeploy avec Build succeeded");
-    process.exit(1);
+  if (fs.existsSync(standaloneServer)) {
+    process.chdir(standaloneDir);
+    require(standaloneServer);
+    return;
   }
 
+  console.warn("[bookflow] standalone absent — fallback next start (dev local)");
   const nextBin = path.join(root, "node_modules", "next", "dist", "bin", "next");
-  const result = spawnSync(
+  require("node:child_process").spawnSync(
     process.execPath,
     [nextBin, "start", "-H", "0.0.0.0", "-p", port],
     { stdio: "inherit", cwd: root, env: process.env },
   );
-  process.exit(result.status ?? 1);
 }
 
 main().catch((e) => {
