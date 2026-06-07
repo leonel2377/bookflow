@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { endOfWeek, startOfWeek } from "date-fns";
 import { BarChart3, CalendarDays, ExternalLink, Wallet } from "lucide-react";
 import { getTranslations } from "next-intl/server";

@@ -11,7 +11,7 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-const DB_CHECK_MS = 6000;
+const DB_CHECK_MS = 2500;
 
 async function checkDatabase(timeoutMs: number): Promise<{
   ok: boolean;

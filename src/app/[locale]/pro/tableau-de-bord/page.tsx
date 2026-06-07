@@ -1,5 +1,4 @@
 import { endOfWeek, startOfMonth, startOfWeek } from "date-fns";
-import { SubscriptionPlan } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
@@ -56,8 +55,8 @@ export default async function ProDashboardPage() {
   const fillRate =
     capacity > 0 ? Math.min(100, Math.round((weekConfirmed / capacity) * 100)) : 0;
 
-  const isPremium = establishment.plan === SubscriptionPlan.PREMIUM;
-  const planKey = establishment.plan === SubscriptionPlan.PREMIUM ? "premium" : "essential";
+  const isPremium = establishment.plan === "PREMIUM";
+  const planKey = establishment.plan === "PREMIUM" ? "premium" : "essential";
 
   return (
     <div>

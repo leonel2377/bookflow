@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { AuthForm } from "@/components/auth/AuthForm";

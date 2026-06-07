@@ -1,6 +1,6 @@
 "use client";
 
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/types/roles";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
