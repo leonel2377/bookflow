@@ -62,12 +62,14 @@ export function buildDatabaseUrl(
   name: string,
   port = "3306",
 ): string {
-  return `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
+  const base = `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
+  const sep = base.includes("?") ? "&" : "?";
+  return `${base}${sep}connect_timeout=5&pool_timeout=10`;
 }
 
-/** Hôtes à essayer sur Hostinger (localhost vs 127.0.0.1). */
+/** Hôtes à essayer sur Hostinger (127.0.0.1 en priorité). */
 export function databaseHostsToTry(preferred?: string): string[] {
-  const hosts = [preferred ?? "127.0.0.1", "localhost", "127.0.0.1"].filter(Boolean);
+  const hosts = [preferred ?? "127.0.0.1", "127.0.0.1"].filter(Boolean);
   return [...new Set(hosts)];
 }
 
