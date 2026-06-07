@@ -26,9 +26,14 @@ async function main() {
   const standaloneServer = path.join(standaloneDir, "server.js");
 
   console.info("[bookflow] app.js — port:", port, "| standalone:", fs.existsSync(standaloneServer));
+  console.info("[bookflow] AUTH_SECRET:", process.env.AUTH_SECRET ? "OK" : "MANQUANT");
 
   if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
-    console.error("[bookflow] AUTH_SECRET manquant dans hPanel");
+    console.warn("[bookflow] AUTH_SECRET manquant — ajoutez-le dans hPanel (connexion impossible sans)");
+  }
+
+  if (!fs.existsSync(path.join(root, ".next", "BUILD_ID"))) {
+    console.error("[bookflow] Build absent — redeploy requis");
     process.exit(1);
   }
 
