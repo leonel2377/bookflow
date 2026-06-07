@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "node scripts/hostinger-build.mjs",
     "start": "node scripts/start.mjs",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

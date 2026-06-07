@@ -9,28 +9,23 @@ import { applyDbEnvFromHostinger } from "./setup-db-env.mjs";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = String(process.env.PORT || "3000");
-const nextBin = path.join(root, "node_modules", "next", "dist", "bin", "next");
-const buildId = path.join(root, ".next", "BUILD_ID");
-
-if (!existsSync(nextBin)) {
-  console.error("[bookflow] next introuvable — npm install && npm run build requis");
-  process.exit(1);
-}
-
-if (!existsSync(buildId)) {
-  console.error("[bookflow] .next/BUILD_ID absent — le build a échoué ou n'a pas été déployé");
-  console.error("[bookflow] hPanel → Build command: npm run build");
-  process.exit(1);
-}
 
 applyDbEnvFromHostinger();
 
-console.info(`[bookflow] Démarrage next start -H 0.0.0.0 -p ${port} (node ${process.version})`);
+const buildId = path.join(root, ".next", "BUILD_ID");
+if (!existsSync(buildId)) {
+  console.warn("[bookflow] ATTENTION: .next/BUILD_ID absent — le build a peut-être échoué");
+} else {
+  console.info("[bookflow] Build détecté:", existsSync(buildId) ? "OK" : "KO");
+}
 
-const child = spawn(process.execPath, [nextBin, "start", "-H", "0.0.0.0", "-p", port], {
+console.info(`[bookflow] next start -H 0.0.0.0 -p ${port} (node ${process.version})`);
+
+const child = spawn("npx", ["next", "start", "-H", "0.0.0.0", "-p", port], {
   stdio: "inherit",
   cwd: root,
   env: process.env,
+  shell: true,
 });
 
 child.on("error", (err) => {
@@ -39,12 +34,7 @@ child.on("error", (err) => {
 });
 
 child.on("exit", (code, signal) => {
-  if (signal) {
-    console.error(`[bookflow] Processus arrêté (signal ${signal})`);
-    process.exit(1);
-  }
-  if (code !== 0) {
-    console.error(`[bookflow] Processus arrêté (code ${code})`);
-  }
+  if (signal) console.error(`[bookflow] Arrêt signal ${signal}`);
+  else if (code !== 0) console.error(`[bookflow] Arrêt code ${code}`);
   process.exit(code ?? 1);
 });
