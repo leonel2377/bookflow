@@ -10,7 +10,10 @@ async function main() {
   const { applyDbEnvFromHostinger } = await import("./scripts/setup-db-env.mjs");
   applyDbEnvFromHostinger();
 
-  const port = String(process.env.PORT || "3000").trim();
+  const args = process.argv.slice(2);
+  const pIdx = args.indexOf("-p");
+  const portFromArg = pIdx >= 0 && args[pIdx + 1] ? String(args[pIdx + 1]).trim() : undefined;
+  const port = portFromArg || String(process.env.PORT || "3000").trim();
   process.env.PORT = port;
   process.env.HOSTNAME = "0.0.0.0";
 
