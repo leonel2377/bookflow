@@ -84,7 +84,7 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
    | Version Node | **20.x** |
    | Commande d’installation | `npm install` |
    | Commande de build | `npm run build` |
-   | Commande de démarrage | `npm run start` (le script lit `PORT` automatiquement) |
+   | Commande de démarrage | `npm run start -- -p $PORT` |
    | Répertoire racine | `/` (racine du repo) |
 
 5. Coller toutes les **variables d’environnement** (étape 2).
@@ -108,10 +108,10 @@ E-mail : créez une boîte **noreply@votredomaine.com** dans Hostinger et utilis
 
 Le **build peut réussir** alors que l’app Node **ne démarre pas**.
 
-1. **Start command** : `npm run start` uniquement.
+1. **Start command** : `npm run start -- -p $PORT` uniquement.
 2. **Build command** : `npm run build`.
 3. **Node 20.x** + redeploy du dernier commit.
-4. **Variables** : `AUTH_SECRET` (32+ car.), `DATABASE_URL` (`localhost`), `AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NODE_ENV=production`.
+4. **Variables** : `AUTH_SECRET` (32+ car.), `DB_*` ou `DATABASE_URL`, `AUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NODE_ENV=production`. **Sans** `PORT=3000`.
 5. **Runtime logs** (menu gauche) : chercher `[bookflow] Démarrage` ou une erreur rouge.
 6. Test : `https://stkmsoft.online/api/health`
 

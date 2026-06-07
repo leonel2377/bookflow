@@ -16,7 +16,7 @@ La page noire **503** = Hostinger ne trouve **aucun processus Node** qui écoute
    |-------|--------|
    | Install | `npm install` |
    | Build | `npm run build` |
-   | Start | `npm run start` |
+   | Start | `npm run start -- -p $PORT` |
    | Node | **20.x** |
 
    Si le build plante par manque de mémoire, essayez :  
@@ -95,14 +95,12 @@ Test : https://stkmsoft.online/api/health → `"database": true`
 |-------|--------|
 | **Install** | `npm install` |
 | **Build** | `npm run build` |
-| **Start** | `npm run start` |
+| **Start** | `npm run start -- -p $PORT` |
 | **Node** | **20.x** (pas 18 ni 24) |
-
-Ajoutez **`PORT=3000`** dans les variables d'environnement.
 
 Guide complet : **[HOSTINGER-FIX.md](./HOSTINGER-FIX.md)**
 
-**Ne pas utiliser** : `npm run start -- -p $PORT` (Next lit `PORT` tout seul).
+**Ne pas définir** `PORT=3000` dans les variables — Hostinger assigne le port via `$PORT`.
 
 ## Variables d'environnement (obligatoires)
 
@@ -112,10 +110,9 @@ AUTH_SECRET=une-longue-cle-aleatoire-32-caracteres-minimum
 AUTH_URL=https://stkmsoft.online
 NEXT_PUBLIC_APP_URL=https://stkmsoft.online
 NODE_ENV=production
-PORT=3000
 ```
 
-> Le `!` du mot de passe MySQL doit être `%21` dans l’URL.
+> **Ne pas ajouter** `PORT=3000` — la commande Start utilise `$PORT`.
 
 ## Après chaque changement
 

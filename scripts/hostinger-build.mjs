@@ -22,6 +22,7 @@ function run(label, cmd, args) {
 
 run("prisma generate", "npx", ["prisma", "generate"]);
 run("next build", "npx", ["next", "build"]);
+run("postbuild standalone", "node", ["scripts/postbuild-standalone.mjs"]);
 
 if (!existsSync(path.join(root, ".next", "BUILD_ID"))) {
   console.error("[bookflow] ÉCHEC: .next/BUILD_ID absent après le build");
