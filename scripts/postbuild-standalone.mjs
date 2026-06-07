@@ -37,7 +37,12 @@ if (existsSync(publicSrc)) {
   cpSync(publicSrc, publicDest, { recursive: true });
 }
 
-// Copier uniquement le moteur Prisma (ne pas écraser @prisma/client tracé par Next)
+// Copier @prisma/client complet (moteur binaire Linux)
+copyDir(
+  "Prisma client",
+  path.join(root, "node_modules", "@prisma", "client"),
+  path.join(standaloneDir, "node_modules", "@prisma", "client"),
+);
 copyDir(
   "Prisma engine",
   path.join(root, "node_modules", ".prisma", "client"),
