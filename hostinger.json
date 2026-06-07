@@ -1,11 +1,11 @@
 {
-  "build": {
-    "command": "NODE_OPTIONS=--max-old-space-size=2048 npm run build"
-  },
   "install": {
     "command": "npm install --include=dev"
   },
+  "build": {
+    "command": "NODE_OPTIONS=--max-old-space-size=2048 npm run build"
+  },
   "run": {
-    "command": "npm run start -- -p $PORT"
+    "command": "npm run start"
   }
 }

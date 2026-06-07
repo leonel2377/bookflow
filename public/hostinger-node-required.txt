@@ -1,0 +1,8 @@
+# ⚠️ Ce site nécessite Node.js
+
+Si vous voyez ce fichier, les **fichiers statiques** fonctionnent (CDN Hostinger)
+mais l'**application Node.js** ne répond pas (erreur 503).
+
+→ Consultez `docs/HOSTINGER-CONTROLE.md` dans le dépôt GitHub.
+
+Test : https://stkmsoft.online/api/ping doit renvoyer `{"ok":true}`
