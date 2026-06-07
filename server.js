@@ -1,1 +1,1 @@
-require("./scripts/start-production.cjs");
+require("./app.js");

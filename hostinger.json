@@ -6,6 +6,6 @@
     "command": "NODE_OPTIONS=--max-old-space-size=2048 npm run build"
   },
   "run": {
-    "command": "npm run start"
+    "command": "npm run start -- -p $PORT"
   }
 }
