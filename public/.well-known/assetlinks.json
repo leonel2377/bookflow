@@ -1,12 +1,8 @@
-{
-  "relation": [
-    "delegate_permission/common.handle_all_urls"
-  ],
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "online.stkmsoft.bookflow",
-    "sha256_cert_fingerprints": [
-      "REMPLACER_PAR_VOTRE_SHA256_APRES_SIGNATURE_ANDROID"
-    ]
+    "package_name": "online.stkmsoft.twa",
+    "sha256_cert_fingerprints": ["2D:AD:57:27:A7:09:5D:B4:B3:17:6C:87:42:12:1D:E8:97:A6:9A:B0:C4:18:D0:06:5E:01:95:69:65:A6:5D:DC"]
   }
-}
+}]
