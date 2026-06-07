@@ -13,24 +13,13 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="BOOKFLOW" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <!-- PWABuilder : ne pas rediriger — laisser le temps de lire le manifest -->
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
-    <main style="font-family: system-ui, sans-serif; max-width: 32rem; margin: 2rem auto; padding: 0 1rem">
-      <h1>BOOKFLOW</h1>
-      <p>Réservation salons de beauté — PWA</p>
-      <p>
-        <a href="/fr">Ouvrir l'application →</a>
-      </p>
-      <p style="color: #666; font-size: 0.875rem">
-        Page pour PWABuilder / tests PWA. Manifest :
-        <a href="/manifest.json">manifest.json</a>
-      </p>
-    </main>
+    <h1>BOOKFLOW</h1>
+    <p><a href="/fr">Accéder au site</a></p>
     <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js").catch(function () {});

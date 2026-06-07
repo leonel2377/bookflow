@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "BOOKFLOW",
     description:
       "Trouvez un salon et réservez en ligne. Espace pro pour gérer votre planning.",
-    start_url: "/fr",
+    start_url: `${APP_URL}/fr`,
     scope: "/",
     display: "standalone",
     orientation: "portrait",

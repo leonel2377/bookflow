@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://stkmsoft.online"),
     title: t("title"),
     description: t("description"),
-    manifest: "/manifest.webmanifest",
+    manifest: "/manifest.json",
     applicationName: "BOOKFLOW",
     appleWebApp: {
       capable: true,

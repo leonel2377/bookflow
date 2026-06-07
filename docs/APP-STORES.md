@@ -30,7 +30,7 @@ Votre site **https://stkmsoft.online** peut devenir une application mobile offic
 
 1. Vérifiez que la PWA est OK : https://stkmsoft.online/manifest.webmanifest
 2. Allez sur **[PWABuilder.com](https://www.pwabuilder.com/)**
-3. Entrez : `https://stkmsoft.online/fr`
+3. Entrez : `https://stkmsoft.online/pwabuilder.html` (ou `https://stkmsoft.online/fr` si le site Node répond)
 4. Cliquez **Start** → corrigez les éventuels avertissements
 5. **Package for stores** → **Android** → téléchargez le projet Android
 6. Ouvrez le projet dans **Android Studio**

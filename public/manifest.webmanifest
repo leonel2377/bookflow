@@ -3,7 +3,7 @@
   "name": "BOOKFLOW — Réservation beauté",
   "short_name": "BOOKFLOW",
   "description": "Trouvez un salon et réservez en ligne. Espace pro pour gérer votre planning.",
-  "start_url": "/fr",
+  "start_url": "https://stkmsoft.online/fr",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "browser"],
