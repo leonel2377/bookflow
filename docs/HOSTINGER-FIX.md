@@ -9,6 +9,7 @@
 | Install | `npm install` |
 | Build | `npm run build` |
 | Start | `npm run start` |
+| Entry file | `server.js` (si le champ existe) |
 
 > Si le build échoue (mémoire) : `NODE_OPTIONS=--max-old-space-size=2048 npm run build`
 

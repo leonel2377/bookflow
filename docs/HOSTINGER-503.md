@@ -1,37 +1,45 @@
 # 503 — L'app Node ne tourne pas (Hostinger)
 
-## Symptôme
-Page **503 Service Unavailable** sur https://stkmsoft.online/fr
+## Diagnostic rapide
 
-Test : https://stkmsoft.online/api/ping  
-→ Si HTML « 503 » au lieu de `{"ok":true}` = **l'app Node est arrêtée**.
+| URL | Résultat | Signification |
+|-----|----------|---------------|
+| https://stkmsoft.online/manifest.json | JSON OK | Domaine OK, fichiers statiques OK |
+| https://stkmsoft.online/api/ping | HTML 503 | **App Node arrêtée ou build raté** |
 
 ---
 
-## Réparation (5 minutes)
+## Étape 1 — Vérifier le BUILD (cause n°1)
 
-### 1. hPanel → Sites → **Applications Web Node.js** → **bookflow**
+hPanel → **Applications Web Node.js** → **bookflow** → **Deployments**
 
-### 2. Commandes (copier-coller exact)
+- Dernier déploiement = **Build succeeded** ?
+- Si **Failed** → cliquer → **Build logs** → copier la **dernière ligne rouge**
 
-| Champ | Valeur |
-|-------|--------|
-| **Node** | 20.x |
-| **Install** | `npm install` |
-| **Build** | `npm run build` |
-| **Start** | `npm run start -- -p $PORT` |
-
-Si le build échoue (mémoire) :
+Build command :
 ```
 NODE_OPTIONS=--max-old-space-size=2048 npm run build
 ```
 
-> **Important :** la commande Start doit contenir `$PORT` (port dynamique Hostinger).  
-> **Ne mettez PAS** `PORT=3000` dans les variables d'environnement — cela provoque souvent un 503.
+---
 
-### 3. Variables d'environnement (obligatoires)
+## Étape 2 — Paramètres exacts
+
+| Champ | Valeur |
+|-------|--------|
+| Node | **20.x** |
+| Install | `npm install` |
+| Build | `npm run build` |
+| Start | `npm run start` |
+
+Entry file (si visible) : laisser vide ou `server.js`
+
+---
+
+## Étape 3 — Variables d'environnement
 
 ```env
+PORT=3000
 NODE_ENV=production
 AUTH_SECRET=minimum-32-caracteres-aleatoires
 AUTH_URL=https://stkmsoft.online
@@ -43,52 +51,30 @@ DB_PASSWORD=votre_mot_de_passe_mysql
 DB_NAME=u835607784_bookflow
 ```
 
-**SUPPRIMEZ** si présentes :
-- `DATABASE_URL` (utiliser uniquement `DB_*`)
-- `PORT=3000` (Hostinger fournit `$PORT` automatiquement)
-
-### 4. Redéployer
-
-1. **Save** les variables
-2. **Deployments** → **Redeploy**
-3. Attendre **Build succeeded** (3–5 min)
-4. Statut = **Running**
-
-### 5. Vérifier
-
-| URL | OK |
-|-----|-----|
-| /api/ping | `{"ok":true}` |
-| /fr | Page d'accueil |
+**Supprimez `DATABASE_URL`** si vous utilisez `DB_*`.
 
 ---
 
-## Si le build échoue
+## Étape 4 — Runtime logs
 
-**Build logs** → lire la dernière erreur rouge.
+Menu gauche → **Runtime logs** (ou stderr.log)
 
-Causes fréquentes :
-- Mémoire insuffisante → `NODE_OPTIONS=--max-old-space-size=2048 npm run build`
-- Erreur TypeScript → corriger puis redeploy
-
----
-
-## Si build OK mais 503 persiste
-
-**Runtime logs** → chercher :
-- `[bookflow] Démarrage port=...` → démarrage OK
-- `ERREUR: aucun port` → Start command incorrecte (voir §2)
-- `Error`, `ENOMEM`, `EADDRINUSE` → copier l'erreur
+Chercher :
+- `[bookflow] Démarrage 0.0.0.0:3000` → OK
+- `BUILD_ID absent` → build échoué
+- `Error`, `ENOMEM`, `Cannot find module` → copier ici
 
 ---
 
-## Domaine mal configuré
+## Étape 5 — Domaine
 
-hPanel → **Domaines** → `stkmsoft.online` doit pointer vers l'app **Node.js bookflow**, pas un site WordPress/PHP vide.
+hPanel → **Domaines** → `stkmsoft.online` doit être sur l'app **Node.js bookflow**, pas PHP/WordPress.
 
 ---
 
-## Mot de passe MySQL changé ?
+## Étape 6 — Redeploy
 
-1. Mettre à jour `DB_PASSWORD` dans l'app Node
-2. **Redeploy** ou **Restart** (obligatoire)
+1. Save variables
+2. Deployments → **Redeploy**
+3. Attendre **Running**
+4. Test : https://stkmsoft.online/api/ping → `{"ok":true}`
