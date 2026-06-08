@@ -148,7 +148,7 @@ export async function POST(request: Request) {
       }
       if (e.code === "P2021") {
         return registerError(
-          "Les tables MySQL n'existent pas encore. Exécutez npm run db:mysql:push depuis votre PC.",
+          "Les tables MySQL n'existent pas. phpMyAdmin → base bookflow → Importer → prisma/hostinger-init.sql",
           503,
         );
       }
@@ -181,7 +181,19 @@ export async function POST(request: Request) {
         503,
       );
     }
+    if (
+      message.includes("does not exist") ||
+      message.includes("n'existe pas") ||
+      message.includes("Table") ||
+      message.includes("P2021")
+    ) {
+      return registerError(
+        "Les tables MySQL n'existent pas. phpMyAdmin → Importer → prisma/hostinger-init.sql",
+        503,
+      );
+    }
 
+    console.error("[register] detail:", message);
     return registerError("Erreur serveur", 500);
   }
 }

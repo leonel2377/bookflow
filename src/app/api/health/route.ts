@@ -104,6 +104,21 @@ export async function GET() {
   if (db.ok) {
     checks.database = true;
     checks.mysqlHostUsed = db.host ?? preferredHost ?? "127.0.0.1";
+
+    try {
+      await prisma.user.count();
+      checks.tablesReady = true;
+    } catch (tableErr) {
+      const msg = tableErr instanceof Error ? tableErr.message : String(tableErr);
+      checks.tablesReady = false;
+      checks.tablesHint =
+        "Tables absentes — phpMyAdmin → Importer → prisma/hostinger-init.sql";
+      if (msg.includes("does not exist") || msg.includes("n'existe pas")) {
+        checks.tablesError = "Table User introuvable";
+      } else {
+        checks.tablesError = msg.slice(0, 120);
+      }
+    }
   } else {
     const msg = db.error ?? "connection failed";
     if (msg.includes("Authentication failed") || msg.includes("credentials")) {
@@ -128,6 +143,7 @@ export async function GET() {
     checks.databaseUrl === true &&
     checks.databaseUrlFormat === true &&
     checks.database === true &&
+    checks.tablesReady === true &&
     checks.smtpReady === true;
 
   return Response.json({
