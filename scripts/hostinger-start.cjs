@@ -23,11 +23,28 @@ function applyDbEnv() {
   }
 }
 
-const args = process.argv.slice(2);
-const pIdx = args.indexOf("-p");
-const portFromArg = pIdx >= 0 && args[pIdx + 1] ? String(args[pIdx + 1]).trim() : "";
+function resolvePort() {
+  const args = process.argv.slice(2);
+  const pIdx = args.indexOf("-p");
+  const portFromArg = pIdx >= 0 && args[pIdx + 1] ? clean(args[pIdx + 1]) : "";
+  const portFromEnv = clean(process.env.PORT);
+
+  const candidates = [portFromArg, portFromEnv, "3000"];
+  for (const raw of candidates) {
+    if (!raw || raw === "$PORT") continue;
+    const n = Number(raw);
+    if (Number.isInteger(n) && n > 0 && n <= 65535) return String(n);
+  }
+
+  return "3000";
+}
+
+const portFromArg =
+  process.argv.indexOf("-p") >= 0
+    ? clean(process.argv[process.argv.indexOf("-p") + 1])
+    : "";
 const portFromEnv = clean(process.env.PORT);
-const port = portFromArg || portFromEnv || "3000";
+const port = resolvePort();
 
 process.env.PORT = port;
 process.env.HOSTNAME = "0.0.0.0";
@@ -40,9 +57,14 @@ const nextBin = path.join(root, "node_modules", "next", "dist", "bin", "next");
 console.info("[bookflow] === DÉMARRAGE ===");
 console.info("[bookflow] port:", port, "(arg:", portFromArg || "-", "| env:", portFromEnv || "-", ")");
 console.info("[bookflow] node:", process.version);
-if (port === "3000" && !portFromArg) {
+if (port === "3000") {
   console.warn(
-    "[bookflow] ATTENTION 503: supprimez PORT=3000 dans hPanel et utilisez Start: npm run start -- -p $PORT",
+    "[bookflow] ATTENTION 503: supprimez PORT=3000 dans hPanel. Start: npm run start (Hostinger injecte PORT) ou npm run start -- -p $PORT",
+  );
+}
+if (portFromArg === "$PORT" && !portFromEnv) {
+  console.warn(
+    "[bookflow] ATTENTION: $PORT non développé par hPanel — utilisez Start: npm run start (sans -p $PORT)",
   );
 }
 console.info("[bookflow] build:", fs.existsSync(buildId) ? "OK" : "ABSENT");

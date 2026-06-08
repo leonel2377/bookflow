@@ -79,6 +79,7 @@ model Establishment {
   staff       StaffMember[]
   services    Service[]
   photos      EstablishmentPhoto[]
+  announcements Announcement[]
   openings    OpeningHours[]
   appointments Appointment[]
 }
@@ -90,6 +91,32 @@ model EstablishmentPhoto {
   sortOrder       Int           @default(0)
   establishmentId String
   establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id              String   @id @default(cuid())
+  title           String
+  body            String?  @db.Text
+  published       Boolean  @default(true)
+  publishedAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  photos          AnnouncementPhoto[]
+
+  @@index([establishmentId, publishedAt])
+}
+
+model AnnouncementPhoto {
+  id             String @id @default(cuid())
+  url            String
+  caption        String?
+  sortOrder      Int    @default(0)
+
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
 }
 
 model StaffMember {

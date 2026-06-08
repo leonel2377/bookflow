@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Building2, CalendarDays, Home } from "lucide-react";
+import { BarChart3, Building2, CalendarDays, Home, Images } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -23,6 +23,7 @@ export function ProBottomNav() {
     { href: "/pro/planning", icon: CalendarDays, label: t("planning") },
     { href: "/pro/tableau-de-bord", icon: BarChart3, label: t("dashboard") },
     { href: "/pro/etablissement", icon: Building2, label: t("establishment") },
+    { href: "/pro/actualites", icon: Images, label: t("announcements") },
   ];
 
   return (

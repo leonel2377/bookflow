@@ -36,7 +36,8 @@
     "dashboard": "Tableau de bord",
     "establishment": "Mon salon",
     "proHome": "Accueil",
-    "proNav": "Navigation pro"
+    "proNav": "Navigation pro",
+    "announcements": "Réalisations"
   },
   "home": {
     "tagline": "Beauté & bien-être",
@@ -197,7 +198,9 @@
     "geoError": "Impossible d'obtenir votre position. Réessayez ou consultez tous les salons.",
     "geoEmpty": "Aucun salon trouvé dans un rayon de 50 km. Essayez « Voir tous les salons ».",
     "showAll": "Voir tous les salons",
-    "sortedByDistance": "Salons triés par distance"
+    "sortedByDistance": "Salons triés par distance",
+    "announcements": "Réalisations & actualités",
+    "announcementsDesc": "Découvrez les dernières créations et annonces du salon."
   },
   "booking": {
     "service": "Prestation",
@@ -251,7 +254,8 @@
     "modules": {
       "planning": { "title": "Planning & rendez-vous", "desc": "Vue agenda, équipe, créneaux et réservations du jour." },
       "plans": { "title": "Formules & options", "desc": "Essentiel, Premium et modules boutique, site, pointage." },
-      "dashboard": { "title": "Tableau de bord", "desc": "Chiffre d'affaires, taux de remplissage, no-shows (Premium)." }
+      "dashboard": { "title": "Tableau de bord", "desc": "Chiffre d'affaires, taux de remplissage, no-shows (Premium)." },
+      "announcements": { "title": "Annonces & réalisations", "desc": "Publiez vos créations avec photos pour vos clients." }
     },
     "plansPage": {
       "title": "Formules",
@@ -301,6 +305,30 @@
       "category": "Catégorie",
       "deactivateService": "Désactiver",
       "activateService": "Réactiver"
+    },
+    "announcements": {
+      "title": "Annonces & réalisations",
+      "subtitle": "Publiez vos créations avec photos — visibles sur votre fiche publique.",
+      "newTitle": "Nouvelle annonce",
+      "newDesc": "Ajoutez un titre, une description et jusqu'à 8 photos de vos réalisations.",
+      "fieldTitle": "Titre",
+      "fieldBody": "Description",
+      "titlePlaceholder": "Ex. Balayage blond été 2026",
+      "bodyPlaceholder": "Détails, techniques utilisées, conseils…",
+      "photos": "Photos",
+      "photosHint": "JPG, PNG ou WebP — max 5 Mo par photo, 8 photos max.",
+      "addPhotos": "Choisir des photos",
+      "removePhoto": "Retirer la photo",
+      "publish": "Publier l'annonce",
+      "publishing": "Publication…",
+      "createError": "Impossible de publier l'annonce",
+      "listTitle": "Vos annonces",
+      "empty": "Aucune annonce pour le moment.",
+      "draft": "Brouillon",
+      "unpublish": "Dépublier",
+      "publishAction": "Publier",
+      "delete": "Supprimer",
+      "deleteConfirm": "Supprimer cette annonce et ses photos ?"
     },
     "dashboard": {
       "title": "Tableau de bord",

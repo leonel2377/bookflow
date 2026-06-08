@@ -7,6 +7,18 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { MobileNav } from "@/components/layout/MobileNav";
 
+function logoHref(
+  mode: "default" | "pro" | "client" | undefined,
+  isProvider: boolean,
+  isClient: boolean,
+): string {
+  if (mode === "pro") return "/pro";
+  if (mode === "client" && isClient) return "/compte";
+  if (isProvider) return "/pro";
+  if (isClient) return "/compte";
+  return "/";
+}
+
 export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client" }) {
   let session = null;
   try {
@@ -18,11 +30,12 @@ export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client"
   const isClient = user?.role === UserRole.CLIENT;
   const isProvider = user?.role === UserRole.PROVIDER;
   const t = await getTranslations("nav");
+  const homeHref = logoHref(mode, isProvider, isClient);
 
   return (
     <header className="sticky top-0 z-50 border-b border-foreground/5 bg-white/80 backdrop-blur-md supports-[padding:max(0px)]:pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:py-4">
-        <Link href="/" className="shrink-0 text-base font-semibold tracking-tight sm:text-lg">
+        <Link href={homeHref} className="shrink-0 text-base font-semibold tracking-tight sm:text-lg">
           BOOK<span className="text-accent">FLOW</span>
         </Link>
 

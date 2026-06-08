@@ -6,3 +6,5 @@ out
 *.db
 *.db-journal
 tsconfig.tsbuildinfo
+/public/uploads/announcements/**
+!/public/uploads/announcements/.gitkeep

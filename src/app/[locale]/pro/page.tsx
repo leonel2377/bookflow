@@ -1,6 +1,6 @@
 import { UserRole } from "@/types/roles";
 import { endOfWeek, startOfWeek } from "date-fns";
-import { BarChart3, CalendarDays, ExternalLink, Wallet } from "lucide-react";
+import { BarChart3, CalendarDays, ExternalLink, Images, Wallet } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/Button";
@@ -17,6 +17,7 @@ export default async function ProHomePage() {
     { href: "/pro/planning", icon: CalendarDays, key: "planning" as const },
     { href: "/pro/tarifs", icon: Wallet, key: "plans" as const },
     { href: "/pro/tableau-de-bord", icon: BarChart3, key: "dashboard" as const },
+    { href: "/pro/actualites", icon: Images, key: "announcements" as const },
   ];
 
   let establishment = null;
@@ -64,7 +65,7 @@ export default async function ProHomePage() {
         </div>
       )}
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {modules.map(({ href, icon: Icon, key }) => (
           <Link
             key={href}

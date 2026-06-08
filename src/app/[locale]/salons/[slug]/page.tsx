@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Clock, MapPin } from "lucide-react";
+import { SalonAnnouncements } from "@/components/salons/SalonAnnouncements";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
@@ -19,6 +20,11 @@ export default async function SalonDetailPage({ params }: Props) {
     include: {
       services: { where: { active: true }, orderBy: { name: "asc" } },
       photos: { orderBy: { sortOrder: "asc" } },
+      announcements: {
+        where: { published: true },
+        orderBy: { publishedAt: "desc" },
+        include: { photos: { orderBy: { sortOrder: "asc" } } },
+      },
       staff: { where: { active: true } },
       openings: { orderBy: { dayOfWeek: "asc" } },
     },
@@ -58,6 +64,8 @@ export default async function SalonDetailPage({ params }: Props) {
                 ))}
               </div>
             )}
+
+            <SalonAnnouncements announcements={establishment.announcements} />
 
             <section className="mt-10">
               <h2 className="text-xl font-semibold">{t("services")}</h2>

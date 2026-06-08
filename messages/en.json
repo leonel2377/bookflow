@@ -36,7 +36,8 @@
     "dashboard": "Dashboard",
     "establishment": "My salon",
     "proHome": "Home",
-    "proNav": "Pro navigation"
+    "proNav": "Pro navigation",
+    "announcements": "Portfolio"
   },
   "home": {
     "tagline": "Beauty & wellness",
@@ -198,7 +199,9 @@
     "geoError": "Could not get your location. Try again or browse all salons.",
     "geoEmpty": "No salons found within 50 km. Try « Show all salons ».",
     "showAll": "Show all salons",
-    "sortedByDistance": "Salons sorted by distance"
+    "sortedByDistance": "Salons sorted by distance",
+    "announcements": "Portfolio & news",
+    "announcementsDesc": "See the salon's latest work and announcements."
   },
   "booking": {
     "service": "Service",
@@ -252,7 +255,8 @@
     "modules": {
       "planning": { "title": "Schedule & bookings", "desc": "Calendar view, team, slots and daily bookings." },
       "plans": { "title": "Plans & add-ons", "desc": "Essential, Premium and shop, website, clock-in modules." },
-      "dashboard": { "title": "Dashboard", "desc": "Revenue, fill rate, no-shows (Premium)." }
+      "dashboard": { "title": "Dashboard", "desc": "Revenue, fill rate, no-shows (Premium)." },
+      "announcements": { "title": "Announcements & portfolio", "desc": "Share your work with photos for clients to see." }
     },
     "plansPage": {
       "title": "Plans & add-ons",
@@ -302,6 +306,30 @@
       "category": "Category",
       "deactivateService": "Deactivate",
       "activateService": "Reactivate"
+    },
+    "announcements": {
+      "title": "Announcements & portfolio",
+      "subtitle": "Publish your work with photos — visible on your public salon page.",
+      "newTitle": "New announcement",
+      "newDesc": "Add a title, description and up to 8 photos of your work.",
+      "fieldTitle": "Title",
+      "fieldBody": "Description",
+      "titlePlaceholder": "E.g. Summer blonde balayage 2026",
+      "bodyPlaceholder": "Details, techniques, tips…",
+      "photos": "Photos",
+      "photosHint": "JPG, PNG or WebP — max 5 MB each, 8 photos max.",
+      "addPhotos": "Choose photos",
+      "removePhoto": "Remove photo",
+      "publish": "Publish announcement",
+      "publishing": "Publishing…",
+      "createError": "Could not publish announcement",
+      "listTitle": "Your announcements",
+      "empty": "No announcements yet.",
+      "draft": "Draft",
+      "unpublish": "Unpublish",
+      "publishAction": "Publish",
+      "delete": "Delete",
+      "deleteConfirm": "Delete this announcement and its photos?"
     },
     "dashboard": {
       "title": "Dashboard",

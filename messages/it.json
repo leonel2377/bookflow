@@ -36,7 +36,8 @@
     "dashboard": "Dashboard",
     "establishment": "Il mio salone",
     "proHome": "Home",
-    "proNav": "Navigazione pro"
+    "proNav": "Navigazione pro",
+    "announcements": "Portfolio"
   },
   "home": {
     "tagline": "Bellezza e benessere",
@@ -197,7 +198,9 @@
     "geoError": "Impossibile ottenere la posizione. Riprova o consulta tutti i saloni.",
     "geoEmpty": "Nessun salone entro 50 km. Prova « Mostra tutti i saloni ».",
     "showAll": "Mostra tutti i saloni",
-    "sortedByDistance": "Saloni ordinati per distanza"
+    "sortedByDistance": "Saloni ordinati per distanza",
+    "announcements": "Realizzazioni & novità",
+    "announcementsDesc": "Scopri le ultime creazioni e annunci del salone."
   },
   "booking": {
     "service": "Servizio",
@@ -251,7 +254,8 @@
     "modules": {
       "planning": { "title": "Agenda e appuntamenti", "desc": "Vista calendario, team, slot e prenotazioni del giorno." },
       "plans": { "title": "Formule e opzioni", "desc": "Essenziale, Premium e moduli shop, sito, timbratura." },
-      "dashboard": { "title": "Dashboard", "desc": "Fatturato, tasso di riempimento, no-show (Premium)." }
+      "dashboard": { "title": "Dashboard", "desc": "Fatturato, tasso di riempimento, no-show (Premium)." },
+      "announcements": { "title": "Annunci & portfolio", "desc": "Pubblica le tue creazioni con foto per i clienti." }
     },
     "plansPage": {
       "title": "Formule e opzioni",
@@ -301,6 +305,30 @@
       "category": "Categoria",
       "deactivateService": "Disattiva",
       "activateService": "Riattiva"
+    },
+    "announcements": {
+      "title": "Annunci & portfolio",
+      "subtitle": "Pubblica le tue creazioni con foto — visibili sulla scheda pubblica.",
+      "newTitle": "Nuovo annuncio",
+      "newDesc": "Aggiungi titolo, descrizione e fino a 8 foto delle tue realizzazioni.",
+      "fieldTitle": "Titolo",
+      "fieldBody": "Descrizione",
+      "titlePlaceholder": "Es. Balayage biondo estate 2026",
+      "bodyPlaceholder": "Dettagli, tecniche, consigli…",
+      "photos": "Foto",
+      "photosHint": "JPG, PNG o WebP — max 5 MB ciascuna, max 8 foto.",
+      "addPhotos": "Scegli foto",
+      "removePhoto": "Rimuovi foto",
+      "publish": "Pubblica annuncio",
+      "publishing": "Pubblicazione…",
+      "createError": "Impossibile pubblicare l'annuncio",
+      "listTitle": "I tuoi annunci",
+      "empty": "Nessun annuncio al momento.",
+      "draft": "Bozza",
+      "unpublish": "Nascondi",
+      "publishAction": "Pubblica",
+      "delete": "Elimina",
+      "deleteConfirm": "Eliminare questo annuncio e le sue foto?"
     },
     "dashboard": {
       "title": "Dashboard",
