@@ -11,7 +11,6 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 applyDbEnvFromHostinger();
 
-// Placeholders pour que le build ne plante pas si une variable manque dans hPanel
 if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
   process.env.AUTH_SECRET = "build-placeholder-secret-32chars-min";
   console.warn("[bookflow] AUTH_SECRET placeholder pour le build");
@@ -34,15 +33,9 @@ function run(label, cmd, args) {
 
 run("prisma generate", "npx", ["prisma", "generate"]);
 run("next build", "npx", ["next", "build"]);
-run("postbuild standalone", "node", ["scripts/postbuild-standalone.mjs"]);
 
 if (!existsSync(path.join(root, ".next", "BUILD_ID"))) {
   console.error("[bookflow] ÉCHEC: .next/BUILD_ID absent après le build");
-  process.exit(1);
-}
-
-if (!existsSync(path.join(root, ".next", "standalone", "server.js"))) {
-  console.error("[bookflow] ÉCHEC: .next/standalone/server.js absent — vérifiez output:standalone");
   process.exit(1);
 }
 

@@ -1,7 +1,8 @@
 /**
- * Point d'entrée Hostinger — lance le serveur Next.js standalone.
+ * Démarrage Hostinger — next start (stable, sans mode standalone).
  * hPanel Start : npm run start -- -p $PORT
  */
+const { spawn } = require("node:child_process");
 const path = require("node:path");
 const fs = require("node:fs");
 
@@ -22,34 +23,39 @@ async function main() {
   process.env.PORT = port;
   process.env.HOSTNAME = "0.0.0.0";
 
-  const standaloneDir = path.join(root, ".next", "standalone");
-  const standaloneServer = path.join(standaloneDir, "server.js");
-
-  console.info("[bookflow] app.js — port:", port, "| standalone:", fs.existsSync(standaloneServer));
-  console.info("[bookflow] AUTH_SECRET:", process.env.AUTH_SECRET ? "OK" : "MANQUANT");
-
-  if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
-    console.warn("[bookflow] AUTH_SECRET manquant — ajoutez-le dans hPanel (connexion impossible sans)");
-  }
+  console.info("=".repeat(50));
+  console.info("[bookflow] Démarrage");
+  console.info("[bookflow] port:", port, "| node:", process.version);
+  console.info("[bookflow] build:", fs.existsSync(path.join(root, ".next", "BUILD_ID")) ? "OK" : "ABSENT");
+  console.info("[bookflow] AUTH:", process.env.AUTH_SECRET ? "OK" : "manquant");
+  console.info("=".repeat(50));
 
   if (!fs.existsSync(path.join(root, ".next", "BUILD_ID"))) {
-    console.error("[bookflow] Build absent — redeploy requis");
+    console.error("[bookflow] Build absent — hPanel → Redeploy");
     process.exit(1);
   }
 
-  if (fs.existsSync(standaloneServer)) {
-    process.chdir(standaloneDir);
-    require(standaloneServer);
-    return;
+  const nextBin = path.join(root, "node_modules", "next", "dist", "bin", "next");
+  if (!fs.existsSync(nextBin)) {
+    console.error("[bookflow] next introuvable — npm install a échoué");
+    process.exit(1);
   }
 
-  console.warn("[bookflow] standalone absent — fallback next start (dev local)");
-  const nextBin = path.join(root, "node_modules", "next", "dist", "bin", "next");
-  require("node:child_process").spawnSync(
-    process.execPath,
-    [nextBin, "start", "-H", "0.0.0.0", "-p", port],
-    { stdio: "inherit", cwd: root, env: process.env },
-  );
+  const child = spawn(process.execPath, [nextBin, "start", "-H", "0.0.0.0", "-p", port], {
+    stdio: "inherit",
+    cwd: root,
+    env: process.env,
+  });
+
+  child.on("error", (err) => {
+    console.error("[bookflow] Erreur:", err);
+    process.exit(1);
+  });
+
+  child.on("exit", (code, signal) => {
+    if (signal) console.error("[bookflow] Signal:", signal);
+    process.exit(code ?? 1);
+  });
 }
 
 main().catch((e) => {
