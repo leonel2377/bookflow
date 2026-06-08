@@ -3,20 +3,23 @@
 --
 -- PRÉREQUIS : tables créées via hostinger-init.sql
 -- Si erreur #1054 "latitude inconnu" → exécutez d'abord hostinger-fix-geo.sql
+-- Si erreur #1062 "Duplicata studio-eclat" → réimportez ce fichier (nettoyage inclus)
 --
 -- Réimportable : supprime d'abord les données démo existantes
 
 SET FOREIGN_KEY_CHECKS = 0;
 
-DELETE FROM `Appointment` WHERE `id` = 'demo-appointment-1';
-DELETE FROM `StaffSchedule` WHERE `id` LIKE 'schedule-demo-staff-%';
-DELETE FROM `Service` WHERE `establishmentId` = 'demo-establish-001';
-DELETE FROM `OpeningHours` WHERE `establishmentId` = 'demo-establish-001';
-DELETE FROM `StaffMember` WHERE `establishmentId` = 'demo-establish-001';
-DELETE FROM `EstablishmentPhoto` WHERE `establishmentId` = 'demo-establish-001';
-DELETE FROM `Establishment` WHERE `id` = 'demo-establish-001';
-DELETE FROM `Client` WHERE `id` = 'demo-client-001';
-DELETE FROM `User` WHERE `email` IN ('pro@studio-eclat.demo', 'client@demo.com');
+DELETE FROM `Appointment` WHERE `id` = 'demo-appointment-1'
+  OR `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e`);
+DELETE FROM `StaffSchedule` WHERE `id` LIKE 'schedule-demo-staff-%'
+  OR `staffId` IN (SELECT `id` FROM (SELECT `id` FROM `StaffMember` WHERE `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e2`)) AS `s`);
+DELETE FROM `Service` WHERE `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e`);
+DELETE FROM `OpeningHours` WHERE `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e`);
+DELETE FROM `StaffMember` WHERE `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e`);
+DELETE FROM `EstablishmentPhoto` WHERE `establishmentId` IN (SELECT `id` FROM (SELECT `id` FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001') AS `e`);
+DELETE FROM `Establishment` WHERE `slug` = 'studio-eclat' OR `id` = 'demo-establish-001';
+DELETE FROM `Client` WHERE `id` = 'demo-client-001' OR `email` = 'client@demo.com';
+DELETE FROM `User` WHERE `email` IN ('pro@studio-eclat.demo', 'client@demo.com') OR `id` IN ('demo-pro-user-001', 'demo-client-user1');
 
 SET FOREIGN_KEY_CHECKS = 1;
 
