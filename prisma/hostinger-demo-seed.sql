@@ -1,5 +1,9 @@
 -- Comptes démo BOOKFLOW — import phpMyAdmin (base u835607784_bookflow)
 -- Mot de passe des deux comptes : demo1234
+--
+-- PRÉREQUIS : tables créées via hostinger-init.sql
+-- Si erreur #1054 "latitude inconnu" → exécutez d'abord hostinger-fix-geo.sql
+--
 -- Réimportable : supprime d'abord les données démo existantes
 
 SET FOREIGN_KEY_CHECKS = 0;
