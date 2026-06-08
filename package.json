@@ -2,14 +2,13 @@
   "name": "reservation-rdv",
   "version": "0.1.0",
   "private": true,
-  "main": "app.js",
   "engines": {
     "node": "20.x"
   },
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/hostinger-build.mjs",
-    "start": "node app.js",
+    "start": "node scripts/hostinger-start.cjs",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "db:generate": "prisma generate",

@@ -1,1 +1,1 @@
-require("./app.js");
+require("./scripts/hostinger-start.cjs");
