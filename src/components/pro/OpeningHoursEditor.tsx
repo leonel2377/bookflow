@@ -4,6 +4,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 
 export type OpeningRow = {
   dayOfWeek: number;
@@ -16,6 +17,7 @@ export function OpeningHoursEditor({ openings: initial }: { openings: OpeningRow
   const t = useTranslations("pro.establishment");
   const td = useTranslations("pro.days");
   const router = useRouter();
+  const { success, error: toastError } = useToast();
   const [rows, setRows] = useState<OpeningRow[]>(() => {
     const byDay = new Map(initial.map((o) => [o.dayOfWeek, o]));
     return Array.from({ length: 7 }, (_, day) => {
@@ -31,7 +33,6 @@ export function OpeningHoursEditor({ openings: initial }: { openings: OpeningRow
     });
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
 
   const inputClass =
     "rounded-lg border border-foreground/12 px-2 py-1.5 text-sm outline-none focus:border-pro";
@@ -43,7 +44,6 @@ export function OpeningHoursEditor({ openings: initial }: { openings: OpeningRow
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setMessage(null);
     try {
       const res = await fetch("/api/pro/openings", {
         method: "PUT",
@@ -52,10 +52,10 @@ export function OpeningHoursEditor({ openings: initial }: { openings: OpeningRow
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Error");
-      setMessage(t("openingsSaved"));
+      success(t("openingsSaved"));
       router.refresh();
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Error");
+      toastError(err instanceof Error ? err.message : t("openingsSaveError"));
     } finally {
       setLoading(false);
     }
@@ -97,11 +97,6 @@ export function OpeningHoursEditor({ openings: initial }: { openings: OpeningRow
           </div>
         ))}
       </div>
-      {message && (
-        <p className={`mt-4 text-sm ${message === t("openingsSaved") ? "text-pro" : "text-red-600"}`}>
-          {message}
-        </p>
-      )}
       <div className="mt-4">
         <Button type="submit" variant="pro" disabled={loading}>
           {loading ? t("saving") : t("saveOpenings")}

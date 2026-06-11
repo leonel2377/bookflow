@@ -164,6 +164,7 @@
     "forgotPasswordError": "Could not send the email. Please try again later.",
     "forgotPasswordServiceError": "Service temporarily unavailable. Please try again later or contact support.",
     "forgotPasswordSmtpError": "Email sending is not configured on the server. Please contact support.",
+    "forgotPasswordMailSendError": "The email could not be sent. Try again later or contact support.",
     "backToLogin": "Back to login",
     "resetPasswordTitle": "New password",
     "resetPasswordDesc": "Choose a password with at least 8 characters.",
@@ -280,10 +281,12 @@
       "save": "Save",
       "saving": "Saving…",
       "saved": "Saved.",
+      "saveError": "Could not save.",
       "openings": "Opening hours",
       "openingsHint": "Used to offer online booking time slots.",
       "saveOpenings": "Save opening hours",
       "openingsSaved": "Hours saved.",
+      "openingsSaveError": "Could not save hours.",
       "closed": "Closed",
       "team": "Team",
       "teamHint": "Each team member has their own hours; bookable slots reflect that.",
@@ -305,7 +308,28 @@
       "price": "Price (€)",
       "category": "Category",
       "deactivateService": "Deactivate",
-      "activateService": "Reactivate"
+      "activateService": "Reactivate",
+      "serviceAdded": "Service added.",
+      "serviceAddError": "Could not add service.",
+      "serviceActivated": "Service reactivated.",
+      "serviceDeactivated": "Service deactivated.",
+      "memberSaved": "Team member saved.",
+      "memberSaveError": "Could not save team member.",
+      "memberAdded": "Team member added.",
+      "memberAddError": "Could not add team member."
+    },
+    "onboarding": {
+      "title": "Set up your salon",
+      "subtitle": "Complete these steps to go live and accept bookings.",
+      "progress": "{done} / {total} steps",
+      "completeTitle": "Your salon is ready!",
+      "completeDesc": "Your page is live. Share it and manage appointments from your schedule.",
+      "steps": {
+        "profile": "Complete your profile (description, address or phone)",
+        "services": "Add at least one service",
+        "hours": "Set opening hours",
+        "announcement": "Publish your first portfolio post (optional)"
+      }
     },
     "announcements": {
       "title": "Announcements & portfolio",
@@ -329,7 +353,10 @@
       "unpublish": "Unpublish",
       "publishAction": "Publish",
       "delete": "Delete",
-      "deleteConfirm": "Delete this announcement and its photos?"
+      "deleteConfirm": "Delete this announcement and its photos?",
+      "publishSuccess": "Announcement published.",
+      "unpublishSuccess": "Announcement unpublished.",
+      "deleteSuccess": "Announcement deleted."
     },
     "dashboard": {
       "title": "Dashboard",

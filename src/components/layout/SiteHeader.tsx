@@ -40,25 +40,41 @@ export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client"
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm text-foreground/70 md:flex">
-          {mode !== "pro" && (
-            <Link href="/salons" className="hover:text-foreground">
-              {t("findSalon")}
-            </Link>
-          )}
-          {mode !== "client" && (
-            <Link href="/pro/devenir-partenaire" className="hover:text-foreground">
-              {t("becomePartner")}
-            </Link>
-          )}
-          {mode !== "client" && (
-            <Link href="/pro" className="hover:text-foreground">
-              {t("proSpace")}
-            </Link>
-          )}
-          {mode !== "pro" && isClient && (
-            <Link href="/compte" className="hover:text-foreground">
-              {t("myAccount")}
-            </Link>
+          {mode === "pro" && isProvider ? (
+            <>
+              <Link href="/pro/planning" className="hover:text-foreground">
+                {t("planning")}
+              </Link>
+              <Link href="/pro/etablissement" className="hover:text-foreground">
+                {t("establishment")}
+              </Link>
+              <Link href="/pro/actualites" className="hover:text-foreground">
+                {t("announcements")}
+              </Link>
+            </>
+          ) : (
+            <>
+              {mode !== "pro" && !isProvider && (
+                <Link href="/salons" className="hover:text-foreground">
+                  {t("findSalon")}
+                </Link>
+              )}
+              {mode !== "client" && !isProvider && (
+                <Link href="/pro/devenir-partenaire" className="hover:text-foreground">
+                  {t("becomePartner")}
+                </Link>
+              )}
+              {mode !== "client" && !isProvider && (
+                <Link href="/pro" className="hover:text-foreground">
+                  {t("proSpace")}
+                </Link>
+              )}
+              {mode !== "pro" && isClient && (
+                <Link href="/compte" className="hover:text-foreground">
+                  {t("myAccount")}
+                </Link>
+              )}
+            </>
           )}
           {user && (
             <span className="max-w-[12rem] truncate text-foreground/50">
@@ -80,9 +96,14 @@ export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client"
           <div className="hidden items-center gap-2 md:flex">
             {mode === "pro" ? (
               isProvider ? (
-                <Button href="/pro/planning" variant="pro">
-                  {t("planning")}
-                </Button>
+                <>
+                  <Button href="/pro/planning" variant="pro">
+                    {t("planning")}
+                  </Button>
+                  <Button href="/pro/etablissement" variant="secondary">
+                    {t("establishment")}
+                  </Button>
+                </>
               ) : (
                 <Button href="/pro/connexion" variant="pro">
                   {t("proLogin")}
@@ -97,18 +118,28 @@ export async function SiteHeader({ mode }: { mode?: "default" | "pro" | "client"
             ) : (
               <>
                 {isProvider ? (
-                  <Button href="/pro" variant="secondary">
-                    {t("proSpace")}
-                  </Button>
+                  <>
+                    <Button href="/pro/planning" variant="pro">
+                      {t("planning")}
+                    </Button>
+                    <Button href="/pro/etablissement" variant="secondary">
+                      {t("establishment")}
+                    </Button>
+                  </>
+                ) : isClient ? (
+                  <>
+                    <Button href="/compte">{t("myAccount")}</Button>
+                    <Button href="/salons" variant="secondary">
+                      {t("book")}
+                    </Button>
+                  </>
                 ) : (
-                  <Button href="/pro" variant="secondary">
-                    {t("iAmPro")}
-                  </Button>
-                )}
-                {isClient ? (
-                  <Button href="/compte">{t("myAccount")}</Button>
-                ) : (
-                  <Button href="/salons">{t("book")}</Button>
+                  <>
+                    <Button href="/pro" variant="secondary">
+                      {t("iAmPro")}
+                    </Button>
+                    <Button href="/salons">{t("book")}</Button>
+                  </>
                 )}
               </>
             )}

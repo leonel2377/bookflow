@@ -4,6 +4,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 import type { OpeningRow } from "@/components/pro/OpeningHoursEditor";
 
 export type StaffRow = {
@@ -46,6 +47,7 @@ function StaffCard({
   const t = useTranslations("pro.establishment");
   const tAuth = useTranslations("auth");
   const td = useTranslations("pro.days");
+  const { success, error: toastError } = useToast();
   const [expanded, setExpanded] = useState(false);
   const [firstName, setFirstName] = useState(member.firstName);
   const [lastName, setLastName] = useState(member.lastName);
@@ -68,10 +70,11 @@ function StaffCard({
         body: JSON.stringify({ firstName, lastName, role, color, schedules }),
       });
       if (!res.ok) throw new Error();
+      success(t("memberSaved"));
       onUpdated();
       setExpanded(false);
     } catch {
-      alert("Error");
+      toastError(t("memberSaveError"));
     } finally {
       setLoading(false);
     }
@@ -171,6 +174,7 @@ export function StaffManager({ staff: initial, openings }: { staff: StaffRow[]; 
   const t = useTranslations("pro.establishment");
   const tAuth = useTranslations("auth");
   const router = useRouter();
+  const { success, error: toastError } = useToast();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [role, setRole] = useState("");
@@ -192,9 +196,10 @@ export function StaffManager({ staff: initial, openings }: { staff: StaffRow[]; 
       setFirstName("");
       setLastName("");
       setRole("");
+      success(t("memberAdded"));
       router.refresh();
     } catch {
-      alert("Error");
+      toastError(t("memberAddError"));
     } finally {
       setAdding(false);
     }

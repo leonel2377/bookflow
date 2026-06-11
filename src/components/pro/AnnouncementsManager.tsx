@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 
 export type AnnouncementItem = {
   id: string;
@@ -27,6 +28,7 @@ export function AnnouncementsManager({
   const t = useTranslations("pro.announcements");
   const locale = useLocale() as keyof typeof dateLocales;
   const router = useRouter();
+  const { success, error: toastError } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [announcements, setAnnouncements] = useState(initial);
@@ -35,7 +37,6 @@ export function AnnouncementsManager({
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const inputClass =
     "mt-1 w-full rounded-xl border border-foreground/12 bg-white px-3 py-2 text-sm outline-none focus:border-pro";
@@ -63,7 +64,6 @@ export function AnnouncementsManager({
   async function createAnnouncement(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -84,9 +84,10 @@ export function AnnouncementsManager({
       setFiles([]);
       previews.forEach((url) => URL.revokeObjectURL(url));
       setPreviews([]);
+      success(t("publishSuccess"));
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("createError"));
+      toastError(err instanceof Error ? err.message : t("createError"));
     } finally {
       setLoading(false);
     }
@@ -103,6 +104,7 @@ export function AnnouncementsManager({
       setAnnouncements((list) =>
         list.map((a) => (a.id === id ? data.announcement : a)),
       );
+      success(published ? t("unpublishSuccess") : t("publishSuccess"));
       router.refresh();
     }
   }
@@ -112,6 +114,7 @@ export function AnnouncementsManager({
     const res = await fetch(`/api/pro/announcements/${id}`, { method: "DELETE" });
     if (res.ok) {
       setAnnouncements((list) => list.filter((a) => a.id !== id));
+      success(t("deleteSuccess"));
       router.refresh();
     }
   }
@@ -204,8 +207,6 @@ export function AnnouncementsManager({
             </div>
           )}
         </div>
-
-        {error && <p className="text-sm text-red-600">{error}</p>}
 
         <Button type="submit" variant="pro" disabled={loading}>
           {loading ? t("publishing") : t("publish")}

@@ -163,6 +163,7 @@
     "forgotPasswordError": "Impossible d'envoyer l'e-mail. Réessayez plus tard.",
     "forgotPasswordServiceError": "Service temporairement indisponible. La base de données doit être rétablie — contactez le support ou réessayez plus tard.",
     "forgotPasswordSmtpError": "L'envoi d'e-mail n'est pas configuré sur le serveur. Contactez le support.",
+    "forgotPasswordMailSendError": "L'e-mail n'a pas pu être envoyé. Réessayez plus tard ou contactez le support.",
     "backToLogin": "Retour à la connexion",
     "resetPasswordTitle": "Nouveau mot de passe",
     "resetPasswordDesc": "Choisissez un mot de passe d'au moins 8 caractères.",
@@ -279,10 +280,12 @@
       "save": "Enregistrer",
       "saving": "Enregistrement…",
       "saved": "Enregistré.",
+      "saveError": "Impossible d'enregistrer.",
       "openings": "Horaires d'ouverture",
       "openingsHint": "Utilisés pour proposer les créneaux de réservation en ligne.",
       "saveOpenings": "Enregistrer les horaires",
       "openingsSaved": "Horaires enregistrés.",
+      "openingsSaveError": "Impossible d'enregistrer les horaires.",
       "closed": "Fermé",
       "team": "Équipe",
       "teamHint": "Chaque collaborateur a ses horaires ; les créneaux réservables en tiennent compte.",
@@ -304,7 +307,28 @@
       "price": "Prix (€)",
       "category": "Catégorie",
       "deactivateService": "Désactiver",
-      "activateService": "Réactiver"
+      "activateService": "Réactiver",
+      "serviceAdded": "Prestation ajoutée.",
+      "serviceAddError": "Impossible d'ajouter la prestation.",
+      "serviceActivated": "Prestation réactivée.",
+      "serviceDeactivated": "Prestation désactivée.",
+      "memberSaved": "Collaborateur enregistré.",
+      "memberSaveError": "Impossible d'enregistrer le collaborateur.",
+      "memberAdded": "Collaborateur ajouté.",
+      "memberAddError": "Impossible d'ajouter le collaborateur."
+    },
+    "onboarding": {
+      "title": "Configurez votre salon",
+      "subtitle": "Suivez ces étapes pour être visible et réservable en ligne.",
+      "progress": "{done} / {total} étapes",
+      "completeTitle": "Votre salon est prêt !",
+      "completeDesc": "Votre fiche est en ligne. Partagez-la et gérez vos rendez-vous depuis le planning.",
+      "steps": {
+        "profile": "Compléter la fiche (description, adresse ou téléphone)",
+        "services": "Ajouter au moins une prestation",
+        "hours": "Définir les horaires d'ouverture",
+        "announcement": "Publier une première réalisation (optionnel)"
+      }
     },
     "announcements": {
       "title": "Annonces & réalisations",
@@ -328,7 +352,10 @@
       "unpublish": "Dépublier",
       "publishAction": "Publier",
       "delete": "Supprimer",
-      "deleteConfirm": "Supprimer cette annonce et ses photos ?"
+      "deleteConfirm": "Supprimer cette annonce et ses photos ?",
+      "publishSuccess": "Annonce publiée.",
+      "unpublishSuccess": "Annonce dépubliée.",
+      "deleteSuccess": "Annonce supprimée."
     },
     "dashboard": {
       "title": "Tableau de bord",

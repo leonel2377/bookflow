@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 
 type EstablishmentData = {
   id: string;
@@ -20,6 +21,7 @@ export function EstablishmentForm({ establishment }: { establishment: Establishm
   const t = useTranslations("pro.establishment");
   const tAuth = useTranslations("auth");
   const router = useRouter();
+  const { success, error: toastError } = useToast();
   const [name, setName] = useState(establishment.name);
   const [description, setDescription] = useState(establishment.description ?? "");
   const [address, setAddress] = useState(establishment.address ?? "");
@@ -27,14 +29,12 @@ export function EstablishmentForm({ establishment }: { establishment: Establishm
   const [phone, setPhone] = useState(establishment.phone ?? "");
   const [email, setEmail] = useState(establishment.email ?? "");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
 
   const inputClass = "input-field";
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setMessage(null);
     try {
       const res = await fetch("/api/pro/establishment", {
         method: "PATCH",
@@ -43,10 +43,10 @@ export function EstablishmentForm({ establishment }: { establishment: Establishm
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Error");
-      setMessage(t("saved"));
+      success(t("saved"));
       router.refresh();
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Erreur");
+      toastError(err instanceof Error ? err.message : t("saveError"));
     } finally {
       setLoading(false);
     }
@@ -93,9 +93,6 @@ export function EstablishmentForm({ establishment }: { establishment: Establishm
           <input type="email" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
       </div>
-      {message && (
-        <p className={`text-sm ${message === t("saved") ? "text-pro" : "text-red-600"}`}>{message}</p>
-      )}
       <Button type="submit" variant="pro" disabled={loading}>
         {loading ? t("saving") : t("save")}
       </Button>

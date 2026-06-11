@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 import { formatDuration, formatPrice } from "@/lib/utils";
 
 type Service = {
@@ -15,7 +17,9 @@ type Service = {
 };
 
 export function ServicesManager({ services: initial }: { services: Service[] }) {
+  const t = useTranslations("pro.establishment");
   const router = useRouter();
+  const { success, error: toastError } = useToast();
   const [services, setServices] = useState(initial);
   const [name, setName] = useState("");
   const [durationMinutes, setDurationMinutes] = useState("45");
@@ -45,9 +49,10 @@ export function ServicesManager({ services: initial }: { services: Service[] }) 
       setServices((s) => [...s, data.service]);
       setName("");
       setCategory("");
+      success(t("serviceAdded"));
       router.refresh();
     } catch {
-      alert("Impossible d'ajouter la prestation");
+      toastError(t("serviceAddError"));
     } finally {
       setLoading(false);
     }
@@ -62,6 +67,7 @@ export function ServicesManager({ services: initial }: { services: Service[] }) 
     if (res.ok) {
       const data = await res.json();
       setServices((list) => list.map((s) => (s.id === id ? data.service : s)));
+      success(active ? t("serviceDeactivated") : t("serviceActivated"));
       router.refresh();
     }
   }

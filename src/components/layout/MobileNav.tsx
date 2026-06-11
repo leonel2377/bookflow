@@ -39,18 +39,23 @@ export function MobileNav({
   }, [mode]);
 
   const links: { href: string; label: string; show: boolean }[] = [
-    { href: "/salons", label: t("findSalon"), show: mode !== "pro" },
+    { href: "/salons", label: t("findSalon"), show: mode !== "pro" && !isProvider },
     {
       href: "/pro/devenir-partenaire",
       label: t("becomePartner"),
-      show: mode !== "client",
+      show: mode !== "client" && mode !== "pro" && !isProvider,
     },
-    { href: "/pro", label: t("proSpace"), show: mode !== "client" },
+    { href: "/pro", label: t("proSpace"), show: mode !== "client" && mode !== "pro" && !isProvider },
     { href: "/compte", label: t("myAccount"), show: mode !== "pro" && isClient },
     {
       href: "/compte/rendez-vous",
       label: t("myAppointments"),
       show: mode === "client" && isClient,
+    },
+    {
+      href: "/pro",
+      label: t("proHome"),
+      show: mode === "pro" && isProvider,
     },
     {
       href: "/pro/planning",
@@ -65,6 +70,11 @@ export function MobileNav({
     {
       href: "/pro/etablissement",
       label: t("establishment"),
+      show: mode === "pro" && isProvider,
+    },
+    {
+      href: "/pro/actualites",
+      label: t("announcements"),
       show: mode === "pro" && isProvider,
     },
   ].filter((l) => l.show);
@@ -145,9 +155,14 @@ export function MobileNav({
           {isLoggedIn && <SignOutButton className="w-full justify-center" />}
           {mode === "pro" ? (
             isProvider ? (
-              <Button href="/pro/planning" variant="pro" className="w-full">
-                {t("planning")}
-              </Button>
+              <>
+                <Button href="/pro/planning" variant="pro" className="w-full">
+                  {t("planning")}
+                </Button>
+                <Button href="/pro/etablissement" variant="secondary" className="w-full">
+                  {t("establishment")}
+                </Button>
+              </>
             ) : (
               <Button href="/pro/connexion" variant="pro" className="w-full">
                 {t("proLogin")}
@@ -165,19 +180,33 @@ export function MobileNav({
             )
           ) : (
             <>
-              {isClient ? (
-                <Button href="/compte" className="w-full">
-                  {t("myAccount")}
-                </Button>
+              {isProvider ? (
+                <>
+                  <Button href="/pro/planning" variant="pro" className="w-full">
+                    {t("planning")}
+                  </Button>
+                  <Button href="/pro/etablissement" variant="secondary" className="w-full">
+                    {t("establishment")}
+                  </Button>
+                </>
+              ) : isClient ? (
+                <>
+                  <Button href="/compte" className="w-full">
+                    {t("myAccount")}
+                  </Button>
+                  <Button href="/salons" variant="secondary" className="w-full">
+                    {t("book")}
+                  </Button>
+                </>
               ) : (
-                <Button href="/salons" className="w-full">
-                  {t("book")}
-                </Button>
-              )}
-              {!isProvider && (
-                <Button href="/pro/connexion" variant="secondary" className="w-full">
-                  {t("proLogin")}
-                </Button>
+                <>
+                  <Button href="/salons" className="w-full">
+                    {t("book")}
+                  </Button>
+                  <Button href="/pro/connexion" variant="secondary" className="w-full">
+                    {t("proLogin")}
+                  </Button>
+                </>
               )}
             </>
           )}

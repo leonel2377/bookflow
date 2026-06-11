@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { ToastProvider } from "@/components/ui/Toast";
 import { PwaInstallBanner } from "@/components/pwa/PwaInstallBanner";
 import { PwaRegister } from "@/components/pwa/PwaRegister";
 import { routing } from "@/i18n/routing";
@@ -66,9 +67,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
-            <PwaRegister />
-            {children}
-            <PwaInstallBanner />
+            <ToastProvider>
+              <PwaRegister />
+              {children}
+              <PwaInstallBanner />
+            </ToastProvider>
           </SessionProvider>
         </NextIntlClientProvider>
       </body>

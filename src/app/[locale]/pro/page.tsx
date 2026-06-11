@@ -3,9 +3,11 @@ import { endOfWeek, startOfWeek } from "date-fns";
 import { BarChart3, CalendarDays, ExternalLink, Images, Wallet } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
+import { ProOnboardingChecklist } from "@/components/pro/ProOnboardingChecklist";
 import { Button } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
 import { getProviderEstablishment } from "@/lib/pro";
+import { getProOnboardingSteps } from "@/lib/pro-onboarding";
 import { prisma } from "@/lib/prisma";
 
 export default async function ProHomePage() {
@@ -22,6 +24,7 @@ export default async function ProHomePage() {
 
   let establishment = null;
   let todayCount = 0;
+  let onboardingSteps: ReturnType<typeof getProOnboardingSteps> | null = null;
 
   if (isProvider && session?.user?.id) {
     establishment = await getProviderEstablishment(session.user.id);
@@ -36,6 +39,19 @@ export default async function ProHomePage() {
             lte: endOfWeek(now, { weekStartsOn: 1 }),
           },
         },
+      });
+
+      const announcementsCount = await prisma.announcement.count({
+        where: { establishmentId: establishment.id },
+      });
+
+      onboardingSteps = getProOnboardingSteps({
+        description: establishment.description,
+        address: establishment.address,
+        phone: establishment.phone,
+        servicesCount: establishment.services.length,
+        openings: establishment.openings,
+        announcementsCount,
       });
     }
   }
@@ -62,6 +78,12 @@ export default async function ProHomePage() {
           <Button href="/pro/inscription" variant="secondary">
             {t("createAccount")}
           </Button>
+        </div>
+      )}
+
+      {onboardingSteps && (
+        <div className="mt-8">
+          <ProOnboardingChecklist steps={onboardingSteps} />
         </div>
       )}
 

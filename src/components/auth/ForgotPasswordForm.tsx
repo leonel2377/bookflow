@@ -37,8 +37,11 @@ export function ForgotPasswordForm({
         if (res.status === 503 || data?.code === "database") {
           throw new Error(t("forgotPasswordServiceError"));
         }
-        if (res.status === 502 || data?.code === "smtp") {
+        if (res.status === 502 || data?.code === "smtp_not_configured") {
           throw new Error(t("forgotPasswordSmtpError"));
+        }
+        if (data?.code === "smtp_send_failed") {
+          throw new Error(t("forgotPasswordMailSendError"));
         }
         throw new Error(t("forgotPasswordError"));
       }

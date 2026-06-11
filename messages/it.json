@@ -163,6 +163,7 @@
     "forgotPasswordError": "Impossibile inviare l'e-mail. Riprova più tardi.",
     "forgotPasswordServiceError": "Servizio temporaneamente non disponibile. Riprova più tardi o contatta il supporto.",
     "forgotPasswordSmtpError": "Invio e-mail non configurato sul server. Contatta il supporto.",
+    "forgotPasswordMailSendError": "Impossibile inviare l'e-mail. Riprova più tardi o contatta il supporto.",
     "backToLogin": "Torna al login",
     "resetPasswordTitle": "Nuova password",
     "resetPasswordDesc": "Scegli una password di almeno 8 caratteri.",
@@ -279,10 +280,12 @@
       "save": "Salva",
       "saving": "Salvataggio…",
       "saved": "Salvato.",
+      "saveError": "Impossibile salvare.",
       "openings": "Orari di apertura",
       "openingsHint": "Usati per proporre gli slot di prenotazione online.",
       "saveOpenings": "Salva orari",
       "openingsSaved": "Orari salvati.",
+      "openingsSaveError": "Impossibile salvare gli orari.",
       "closed": "Chiuso",
       "team": "Team",
       "teamHint": "Ogni collaboratore ha i propri orari; gli slot prenotabili li rispettano.",
@@ -304,7 +307,28 @@
       "price": "Prezzo (€)",
       "category": "Categoria",
       "deactivateService": "Disattiva",
-      "activateService": "Riattiva"
+      "activateService": "Riattiva",
+      "serviceAdded": "Servizio aggiunto.",
+      "serviceAddError": "Impossibile aggiungere il servizio.",
+      "serviceActivated": "Servizio riattivato.",
+      "serviceDeactivated": "Servizio disattivato.",
+      "memberSaved": "Collaboratore salvato.",
+      "memberSaveError": "Impossibile salvare il collaboratore.",
+      "memberAdded": "Collaboratore aggiunto.",
+      "memberAddError": "Impossibile aggiungere il collaboratore."
+    },
+    "onboarding": {
+      "title": "Configura il tuo salone",
+      "subtitle": "Completa questi passaggi per essere visibile e prenotabile online.",
+      "progress": "{done} / {total} passaggi",
+      "completeTitle": "Il tuo salone è pronto!",
+      "completeDesc": "La tua scheda è online. Condividila e gestisci gli appuntamenti dall'agenda.",
+      "steps": {
+        "profile": "Completa la scheda (descrizione, indirizzo o telefono)",
+        "services": "Aggiungi almeno un servizio",
+        "hours": "Imposta gli orari di apertura",
+        "announcement": "Pubblica una prima realizzazione (opzionale)"
+      }
     },
     "announcements": {
       "title": "Annunci & portfolio",
@@ -328,7 +352,10 @@
       "unpublish": "Nascondi",
       "publishAction": "Pubblica",
       "delete": "Elimina",
-      "deleteConfirm": "Eliminare questo annuncio e le sue foto?"
+      "deleteConfirm": "Eliminare questo annuncio e le sue foto?",
+      "publishSuccess": "Annuncio pubblicato.",
+      "unpublishSuccess": "Annuncio nascosto.",
+      "deleteSuccess": "Annuncio eliminato."
     },
     "dashboard": {
       "title": "Dashboard",

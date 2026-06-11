@@ -40,9 +40,16 @@ export async function POST(req: Request) {
       );
     }
 
-    if (err instanceof MailNotConfiguredError || err instanceof MailSendError) {
+    if (err instanceof MailNotConfiguredError) {
       return NextResponse.json(
-        { error: "mail_failed", code: "smtp" },
+        { error: "mail_not_configured", code: "smtp_not_configured" },
+        { status: 502 },
+      );
+    }
+
+    if (err instanceof MailSendError) {
+      return NextResponse.json(
+        { error: "mail_send_failed", code: "smtp_send_failed" },
         { status: 502 },
       );
     }
